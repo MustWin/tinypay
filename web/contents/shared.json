@@ -1,0 +1,8 @@
+{
+	"site-title": "Welcome!",
+	"footer-text": "Built with <a href=\"http://laktek.github.com/punch\">Punch</a>",
+	"navbar": [
+		{ "label": "Home", "href": "/" },
+    { "label": "About", "href": "/about" }
+	]
+}
