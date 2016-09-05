@@ -1,4 +1,4 @@
-# micropay
+# Micropay
 
 
 ## Required reading
@@ -7,6 +7,7 @@
 * [Solidity docs](https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html)
 * [Truffle Docs](http://truffle.readthedocs.io/en/latest/)
 * [Punch Docs](http://laktek.github.io/punch/)
+* [Metamask development with Truffle](https://blog.metamask.io/developing-for-metamask-with-truffle/)
 
 ## Dev environment
 
