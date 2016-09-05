@@ -3,11 +3,16 @@
 
 ## Required reading
 
-[Solidity docs](https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html)
-[Truffle Docs](http://truffle.readthedocs.io/en/latest/)
+* [Newb Intro](https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4#.9bb4syvvq)
+* [Solidity docs](https://solidity.readthedocs.io/en/latest/introduction-to-smart-contracts.html)
+* [Truffle Docs](http://truffle.readthedocs.io/en/latest/)
+* [Punch Docs](http://laktek.github.io/punch/)
 
 ## Dev environment
 
 1. Install [Metamask](https://metamask.io/)
 2. Install [Truffle](http://truffle.readthedocs.io/en/latest/getting_started/installation/)
-3. 
+3. Install [testrpc](npm install -g ethereumjs-testrpc)
+4. Install [punch](http://laktek.github.io/punch/)
+
+[Browser-solidity](https://ethereum.github.io/browser-solidity/) may also be useful for compiling/editing contracts
