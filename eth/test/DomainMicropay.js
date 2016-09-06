@@ -15,7 +15,7 @@ contract('DomainMicropay', function(accounts) {
 
   describe('signUp', function() {
     it("Should allow sign up if there is no existing account.", function(done) {
-      contract.signUp("my.fake.domain", {from: clientWallet1})
+      contract.signUp("my.fake.domain", 100, {from: clientWallet1})
         .then(() => { done(); })
         .catch((err) => { done("Registration failed: " + err); });
     });

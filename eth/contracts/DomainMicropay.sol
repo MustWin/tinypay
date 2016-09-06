@@ -6,12 +6,13 @@ contract DomainMicropay {
     string domain;
     address addr;
     bool confirmed;
+    uint256 pricePerHit;
     UserClientMicropay contractAddr;
   }
   mapping(string => Client) domainToClient;
   address micropayWallet;
 
-  event ClientCreated(string domain, address client);
+  event ClientCreated(string domain, address client, uint256 _pricePerHit);
   event ClientConfirmed(string domain, address client, address clientContract);
 
   function DomainMicropay() {
@@ -22,7 +23,7 @@ contract DomainMicropay {
           This function emits ClientCreated if a new client is added.
   * @param domain The domain to associate with this contract. This should be a FQDN matching the regex: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
   */
-  function signUp(string domain) {
+  function signUp(string domain, uint256 _pricePerHit) {
     // Validate domain
     if (bytes(domain).length < 4) { // e.g. a.co
       throw;
@@ -35,9 +36,9 @@ contract DomainMicropay {
       throw;
     }
 
-    var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, contractAddr: new UserClientMicropay(this, msg.sender)});
+    var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, msg.sender, _pricePerHit)});
     domainToClient[domain] = newClient;
-    ClientCreated(domain, msg.sender);
+    ClientCreated(domain, msg.sender, _pricePerHit);
   }
 
   /**@dev Mark this client as approved for a given domain, this should only accept messages from our trusted wallet.
@@ -45,12 +46,12 @@ contract DomainMicropay {
   *  @param clientDomain The domain we're confirming
   *  @param clientAddr The wallet address we're confirming
   */
-  function ConfirmClient(string clientDomain, address clientAddr) returns (bool) {
+  function ConfirmClient(string clientDomain, address clientAddr, uint256 pricePerHit) returns (bool) {
     if (msg.sender != micropayWallet) {
       throw;
     }
     Client client = domainToClient[clientDomain];
-    if (!client.confirmed && client.addr == clientAddr) {
+    if (!client.confirmed && client.addr == clientAddr && client.pricePerHit == pricePerHit) {
       client.confirmed = true;
       ClientConfirmed(client.domain, client.addr, client.contractAddr);
     }

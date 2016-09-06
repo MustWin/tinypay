@@ -1,14 +1,14 @@
-
-//import "./DomainMicropay.sol";// as DomainMicropay
 import "./UserClient.sol";// as UserClient
 
 contract UserClientMicropay {
   address client;
   address domainMicropayContract;
+  uint256 pricePerHit;
   mapping(address => UserClient ) userToContract;
 
-  function UserClientMicropay(address _domainMicropayContract, address _client) {
+  function UserClientMicropay(address _domainMicropayContract, address _client, uint256 _pricePerHit) {
     client = _client;
+    pricePerHit = _pricePerHit;
     domainMicropayContract = _domainMicropayContract;
   }
 
@@ -31,7 +31,7 @@ contract UserClientMicropay {
   }
 
   // Register the sending user, creating and saving a new contract
-  function registerUser(uint256 pricePerHit) returns (UserClient) {
+  function registerUser() returns (UserClient) {
     var userClientContract = new UserClient(pricePerHit, this);
     userToContract[msg.sender] = userClientContract;
     return userClientContract;
