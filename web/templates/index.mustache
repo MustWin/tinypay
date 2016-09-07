@@ -1,8 +1,43 @@
 {{> header }}
 
-		<div role="main">
-      <img src="banner.jpg"/>
-			{{{intro}}}
+	<div class="section no-pad-bot" id="index-banner">
+		<div class="container">
+			<br><br>
+			<h1 class="header center orange-text">{{site-title}}</h1>
+			<div class="row center">
+				<h5 class="header col s12 light">{{tagline}}</h5>
+			</div>
+			<div class="row center">
+				<a href="/sign-up" id="download-button" class="btn-large waves-effect waves-light orange">{{cta}}</a>
+			</div>
+			<br><br>
+
 		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="section">
+
+			<!--   Icon Section   -->
+			<div class="row">
+				{{#features}}
+					<div class="col s12 m4">
+						<div class="icon-block">
+							<h2 class="center light-blue-text"><i class="material-icons">{{icon}}</i></h2>
+							<h5 class="center">{{title}}</h5>
+
+							<p class="light">{{text}}</p>
+						</div>
+					</div>
+				{{/features}}
+			</div>
+		</div>
+		<br><br>
+
+		<div class="section">
+
+		</div>
+	</div>
 
 {{> footer }}
