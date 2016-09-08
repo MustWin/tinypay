@@ -1,18 +1,29 @@
 {{> header }}
+  <div class="container">
 
-  <article>
-    <section>
-      {{{article_intro}}}
-    </section>
-
-    <div id="CTA">Like the intro? Pay with micropay to reveal the rest of the article
-      <div id="micropay-button"></div>
+    <div class="row">
+      <h3>Imagine finding a great piece of content</h3>
+      <p>Often sites will pose a paywall like this, now you can collect funds immediately to open the paywall</p>
     </div>
 
-    <section id="hidden-section" style="display: none; ">
-      {{{article_rest}}}
-    </section>
-  </article>
+    <div class="row">
+      <div class="col s10 push-s1">
+        <article>
+          <section>
+            {{{article_intro}}}
+          </section>
+
+          <div id="CTA">Like the intro? Pay with micropay to reveal the rest of the article
+            <div id="micropay-button"></div>
+          </div>
+
+          <section id="hidden-section" style="display: none; ">
+            {{{article_rest}}}
+          </section>
+        </article>
+      </div>
+    </div>
+  </div>
 
 {{> footer }}
 {{#javascript_bundle}}/js/micropay.js{{/javascript_bundle}}

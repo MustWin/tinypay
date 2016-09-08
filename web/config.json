@@ -14,7 +14,7 @@
 		]	,
 		"/js/micropay.js": [
 			"/js/load_deps.js",
-			"/js/app.js",
+			"/js/client.js",
 			"/js/micropay/capabilities.js",
 			"/js/micropay/micropay_button.js"
 		]
