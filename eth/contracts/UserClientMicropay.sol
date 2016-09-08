@@ -3,7 +3,7 @@ import "./UserClient.sol";// as UserClient
 contract UserClientMicropay {
   address client;
   address domainMicropayContract;
-  uint256 pricePerHit;
+  uint256 public pricePerHit;
   mapping(address => UserClient ) userToContract;
 
   function UserClientMicropay(address _domainMicropayContract, address _client, uint256 _pricePerHit) {

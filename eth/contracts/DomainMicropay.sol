@@ -1,4 +1,4 @@
-import "./UserClientMicropay.sol";// as UserClient
+import "./UserClientMicropay.sol";
 
 /** @title DomainMicropay */
 contract DomainMicropay {
@@ -46,7 +46,7 @@ contract DomainMicropay {
   *  @param clientDomain The domain we're confirming
   *  @param clientAddr The wallet address we're confirming
   */
-  function ConfirmClient(string clientDomain, address clientAddr, uint256 pricePerHit) returns (bool) {
+  function confirmClient(string clientDomain, address clientAddr, uint256 pricePerHit) returns (bool) {
     if (msg.sender != micropayWallet) {
       throw;
     }
@@ -61,7 +61,7 @@ contract DomainMicropay {
   /** @dev Retrieve the UserClientPayment contract address for a confirmed domain
   * @param domain This should be a FQDN matching the regex: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
   */
-  function GetPaymentContractForDomain(string domain) returns (UserClientMicropay) {
+  function getPaymentContractForDomain(string domain) returns (address) {
     Client c = domainToClient[domain];
     if (!c.confirmed) {
       throw;
@@ -70,7 +70,7 @@ contract DomainMicropay {
   }
 
   // Only callable by micropay
-  function Withdraw(uint256 amount) {
+  function withdraw(uint256 amount) {
     if (msg.sender != micropayWallet) {
       throw;
     }
