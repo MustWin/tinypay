@@ -1,3 +1,27 @@
-{{> layout }}
+{{> header }}
 
+  <article>
+    <section>
+      {{{article_intro}}}
+    </section>
+
+    <div id="CTA">Like the intro? Pay with micropay to reveal the rest of the article
+      <div id="micropay-button"></div>
+    </div>
+
+    <section id="hidden-section" style="display: none; ">
+      {{{article_rest}}}
+    </section>
+  </article>
+
+{{> footer }}
 {{#javascript_bundle}}/js/micropay.js{{/javascript_bundle}}
+
+<script>
+  var reveal = function () { $("#hidden-section").show(); $("#CTA").hide(); };
+  MP.Configure({
+    pricePerView: "4328994800000000", // in wei this is $0.05 at Ether ~= 11.5 USD
+    userClientContractAddress: "0x2C28De2422732AB77EFdA8854597A960FaB7A77B",
+    callback: reveal
+  }).Init();
+</script>

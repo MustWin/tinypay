@@ -63,7 +63,7 @@ var MP = {name: "micropay"};
   }
 
   // APP ENTRY POINT
-  var finish = function() { _when(deps[deps.length-1].checkFn, MP.Build); };
+  var finish = function() { _when(deps[deps.length-1].checkFn, MP._Build); };
   if (window.$ === undefined) {
       _LoadDep("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function() {
         LoadDeps().then(finish);

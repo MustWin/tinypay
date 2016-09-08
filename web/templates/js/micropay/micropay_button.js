@@ -7,11 +7,12 @@ MP.Add(function() {
     },
     initialize: function() {
       this.listenTo(this.model, "change", this.render);
+      this.render();
     },
-    enabledTemplate: _.template('<button>Ether Micropay</button>'),
-    disabledTemplate: _.template('<button>Learn about Ether Micropay</button>'),
+    enabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">flash_on</i>TinyPay</button>'),
+    disabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</button>'),
     render: function() {
-      if (this.model.capabilities.enabled) {
+      if (this.model.get('capabilities').get('enabled')) {
           this.$el.html(this.enabledTemplate(this.model.attributes));
       } else {
         this.$el.html(this.disabledTemplate(this.model.attributes));

@@ -5,19 +5,14 @@ MP.Add(function() {
       this.web3Poll();
     },
     hasWeb3: function() {
-      return window.web3 && window.web3.eth && window.web3.eth.getAccounds;
+      return window.web3 && window.web3.eth && window.web3.eth.getAccounts;
     },
     web3Poll: function() {
-      var self = this;
       // Try for 30 seconds
-      if (!this.hasWeb3()) {
-          setTimeout(function() {
-            if (!self.hasWeb3()) {
-              self.web3Poll();
-            } else {
-                self.set({enabled: true}); // emits event
-            }
-          }, 10);
+      if (this.hasWeb3()) {
+        this.set({enabled: true}); // emits event
+      } else if (Date.now() - this.startTime < 30000) {
+        setTimeout(this.web3Poll, 10);
       }
     }
   });
