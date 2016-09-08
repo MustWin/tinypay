@@ -14,8 +14,8 @@ contract('DomainMicropay', function(accounts) {
   })
 
   describe('signUp', function() {
-    var unconfirmedDomain = "my.unconfirmed.domain";
-    var confirmedDomain = "my.confirmed.domain";
+    var unconfirmedDomain = "signup.unconfirmed.domain";
+    var confirmedDomain = "signup.confirmed.domain";
     it("Should allow sign up if there is no existing account.", function(done) {
       contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
         .then(() => { done(); })
@@ -63,28 +63,79 @@ contract('DomainMicropay', function(accounts) {
         .catch((err) => { done("Signup failed: " + err); });
     });
   });
-/*
-  describe('ConfirmClient', function() {
+
+  describe('confirmClient', function() {
+    var unconfirmedDomain = "confirm.unconfirmed.domain";
     it("Should only allow creators wallet to call ConfirmClient.", function(done) {
-      assert.fail(1, 2, "write a test");
+      contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
+        .then(() => {
+          contract.confirmClient(unconfirmedDomain, clientWallet1, 100, {from: clientWallet1})
+            .then(() => {
+              done("confirmation should've failed");
+            })
+            .catch((err) => {
+              done();
+            });
+          });
     });
 
     it("Should emit ClientConfirmed event when ConfirmClient succeeds.", function(done) {
-      assert.fail(1, 2, "write a test");
+      var clientConfirmations = contract.ClientConfirmed({fromBlock: "latest"});
+      clientConfirmations.watch((err, conf) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+      contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
+        .then(() => {
+          contract.confirmClient(unconfirmedDomain, clientWallet1, 100, {from: micropayWallet})
+            .catch((err) => {
+              done("confirmation failed");
+            });
+        });
     });
   });
 
   describe('getPaymentContractForDomain', function() {
-    it("Should not return a contract from GetPaymentContractForDomain until the client is confirmed.", function(done) {
-      assert.fail(1, 2, "write a test");
+    var unconfirmedDomain = "getPaymentContractForDomain.unconfirmed.domain";
+    it("Should not return a contract from getPaymentContractForDomain until the client is confirmed.", function(done) {
+      contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
+        .then(() => {
+          contract.getPaymentContractForDomain.call(unconfirmedDomain)
+            .then((err) => {
+              done("getPaymentContractForDomain should have failed")
+            })
+            .catch((err) => {
+                done();
+            });
+        })
+        .catch((err) => { done("Signup failed: " + err); });
     });
 
     it("Should return a contract from GetPaymentContractForDomain after the client is confirmed.", function(done) {
-      assert.fail(1, 2, "write a test");
+      contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
+        .then(() => {
+          contract.confirmClient(unconfirmedDomain, clientWallet1, 100, {from: micropayWallet})
+            .then(() => {
+              contract.getPaymentContractForDomain.call(unconfirmedDomain)
+                .then((userClientMicropayContract) => {
+                  UserClientMicropay.at(userClientMicropayContract).pricePerHit.call().then((contractCost) => {
+                    done();
+                  })
+                })
+                .catch((err) => {
+                    done(err);
+                });
+            })
+            .catch((err) => { done("Confirmation failed: " + err); });
+        })
+        .catch((err) => { done("Signup failed: " + err); });
     });
   });
 
-
+/*
   describe('withdraw', function() {
     it("Should not allow anyone but micropayWallet to withdraw funds.", function(done) {
       assert.fail(1, 2, "write a test");

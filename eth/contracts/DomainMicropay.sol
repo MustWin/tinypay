@@ -61,7 +61,7 @@ contract DomainMicropay {
   /** @dev Retrieve the UserClientPayment contract address for a confirmed domain
   * @param domain This should be a FQDN matching the regex: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
   */
-  function getPaymentContractForDomain(string domain) returns (address) {
+  function getPaymentContractForDomain(string domain) returns (UserClientMicropay) {
     Client c = domainToClient[domain];
     if (!c.confirmed) {
       throw;
