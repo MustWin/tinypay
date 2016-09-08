@@ -9,7 +9,7 @@ function setStatus(message) {
 function refreshBalance() {
   var meta = MetaCoin.deployed();
 
-  meta.getBalance.call(account, {from: account}).then(function(value) {
+  return meta.getBalance.call(account, {from: account}).then(function(value) {
     var balance_element = document.getElementById("balance");
     balance_element.innerHTML = value.valueOf();
   }).catch(function(e) {
@@ -28,7 +28,7 @@ function sendCoin() {
 
   meta.sendCoin(receiver, amount, {from: account}).then(function() {
     setStatus("Transaction complete!");
-    refreshBalance();
+    return refreshBalance();
   }).catch(function(e) {
     console.log(e);
     setStatus("Error sending coin; see log.");
