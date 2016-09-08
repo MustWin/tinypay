@@ -9,13 +9,14 @@
 
 	"bundles": {
 		"/css/all.css": [
-			"/css/normalize.css",
-			"/css/main.css",
-			"/css/site.less"
+			"/css/materialize.css",
+			"/css/style.css"
 		]	,
-		"/js/all.js": [
+		"/js/micropay.js": [
 			"/js/load_deps.js",
-			"/js/micropay.js"
+			"/js/client.js",
+			"/js/micropay/capabilities.js",
+			"/js/micropay/micropay_button.js"
 		]
 	}
 }

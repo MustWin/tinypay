@@ -1,8 +1,10 @@
 {
-	"site-title": "Welcome!",
-	"footer-text": "Built with <a href=\"http://laktek.github.com/punch\">Punch</a>",
+	"site-title": "TinyPay",
+	"footer-text": "Copyright 2016 MustWin LLC, all rights reserved",
 	"navbar": [
 		{ "label": "Home", "href": "/" },
-    { "label": "About", "href": "/about" }
+    { "label": "How it works", "href": "/how-it-works" },
+		{ "label": "Demo", "href": "/demo" },
+		{ "label": "Sign up", "href": "/sign-up" }
 	]
 }
