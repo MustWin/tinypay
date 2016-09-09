@@ -16,4 +16,6 @@
 3. Install [testrpc](https://github.com/ethereumjs/testrpc) `npm install -g ethereumjs-testrpc`
 4. Install [punch](http://laktek.github.io/punch/)
 
+The `oracles` sub-project is built with [Go](https://golang.org), and expects that the project is checked out in a valid `GOPATH`, for example: `go get github.com/MustWin/micropay/...`
+
 [Browser-solidity](https://ethereum.github.io/browser-solidity/) may also be useful for compiling/editing contracts
