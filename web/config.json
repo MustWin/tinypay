@@ -17,7 +17,8 @@
 			"/js/load_deps.js",
 			"/js/client.js",
 			"/js/micropay/capabilities.js",
-			"/js/micropay/micropay_button.js"
+			"/js/micropay/micropay_button.js",
+			"/js/micropay/signup.js"
 		]
 	}
 }
