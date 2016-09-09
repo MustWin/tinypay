@@ -1,7 +1,6 @@
 package oracles
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ethereum/go-ethereum/rpc"
@@ -34,44 +33,31 @@ func (w *BlockWatcher) loop() error {
 		return err
 	}
 
-	id := 0
-	err = client.Send(req{Method: "eth_newBlockFilter", ID: fmt.Sprintf("%d", id)})
+	err = client.Send(NewBlockFilter())
 	if err != nil {
 		return err
 	}
 
-	r := res{}
-	err = client.Recv(&r)
+	filterID := filterResult{}
+	err = client.Recv(&filterID)
 	if err != nil {
 		return err
 	}
-	filterID, ok := r.Result.(string)
-	if !ok {
-		return fmt.Errorf("result type unexpected: %T %#v", r.Result, r.Result)
-	}
 
+	br := blockResult{}
 	for {
-		id++
 		select {
 		case <-time.After(w.interval):
-			err = client.Send(req{Method: "eth_getFilterChanges", Params: []string{filterID}, ID: fmt.Sprintf("%d", id)})
+			err = client.Send(NewFilterChanges(filterID.Result))
 			if err != nil {
 				return err
 			}
-			err = client.Recv(&r)
+			err = client.Recv(&br)
 			if err != nil {
 				return err
 			}
-			results, ok := r.Result.([]interface{})
-			if !ok {
-				continue
-			}
-			for _, rr := range results {
-				bid, ok := rr.(string)
-				if !ok {
-					continue
-				}
-				w.Ch <- bid
+			for _, blockID := range br.Result {
+				w.Ch <- blockID
 			}
 		}
 	}

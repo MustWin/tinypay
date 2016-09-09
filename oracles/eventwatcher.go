@@ -8,10 +8,11 @@ import (
 	tomb "gopkg.in/tomb.v2"
 )
 
-// EventWatcher emits events.
+// EventWatcher is responsible for watching for new events on the chain
+// and emitting the log data of the event on the Ch channel.
 type EventWatcher struct {
 	tomb.Tomb
-	Ch       chan map[string]interface{}
+	Ch       chan interface{}
 	interval time.Duration
 	url      string
 }
@@ -19,7 +20,7 @@ type EventWatcher struct {
 // NewEventWatcher returns a EventWatcher.
 func NewEventWatcher(url string, pollInterval time.Duration) *EventWatcher {
 	bw := &EventWatcher{
-		Ch:       make(chan map[string]interface{}),
+		Ch:       make(chan interface{}),
 		interval: pollInterval,
 		url:      url,
 	}
@@ -33,56 +34,32 @@ func (w *EventWatcher) loop() error {
 		return err
 	}
 
-	id := 0
-	rq := req{
-		Method: "eth_newFilter",
-		Params: []interface{}{map[string]interface{}{
-			"fromBlock": "latest",
-			"topics":    []string{},
-		}},
-		ID: fmt.Sprintf("evt_%d", id),
-	}
-	err = client.Send(rq)
+	err = client.Send(NewEventFilter(""))
 	if err != nil {
 		return err
 	}
 
-	r := res{}
-	err = client.Recv(&r)
+	filterID := filterResult{}
+	err = client.Recv(&filterID)
 	if err != nil {
 		return err
 	}
 
-	filterID, ok := r.Result.(string)
-	if !ok {
-		return fmt.Errorf("result type unexpected: %T %#v", r.Result, r.Result)
-	}
-
-	fmt.Printf("here\n")
-
+	evt := eventResult{}
 	for {
-		id++
 		select {
 		case <-time.After(w.interval):
 			fmt.Printf(".")
-			err = client.Send(req{Method: "eth_getFilterChanges", Params: []string{filterID}, ID: fmt.Sprintf("evt_%d", id)})
+			err = client.Send(NewFilterChanges(filterID.Result))
 			if err != nil {
 				return err
 			}
-			err = client.Recv(&r)
+			err = client.Recv(&evt)
 			if err != nil {
 				return err
 			}
-			results, ok := r.Result.([]interface{})
-			if !ok {
-				continue
-			}
-			for _, rr := range results {
-				log, ok := rr.(map[string]interface{})
-				if !ok {
-					continue
-				}
-				w.Ch <- log
+			for _, rr := range evt.Result {
+				w.Ch <- rr
 			}
 		}
 	}
