@@ -1,0 +1,64 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/ethereum/go-ethereum/common",
+			"repository": "https://github.com/ethereum/go-ethereum",
+			"revision": "fed692f67e81bd3937a5efab38f56a9b99d04d41",
+			"branch": "master",
+			"path": "/common"
+		},
+		{
+			"importpath": "github.com/ethereum/go-ethereum/logger",
+			"repository": "https://github.com/ethereum/go-ethereum",
+			"revision": "fed692f67e81bd3937a5efab38f56a9b99d04d41",
+			"branch": "master",
+			"path": "/logger"
+		},
+		{
+			"importpath": "github.com/ethereum/go-ethereum/rpc",
+			"repository": "https://github.com/ethereum/go-ethereum",
+			"revision": "fed692f67e81bd3937a5efab38f56a9b99d04d41",
+			"branch": "master",
+			"path": "/rpc"
+		},
+		{
+			"importpath": "github.com/rs/cors",
+			"repository": "https://github.com/rs/cors",
+			"revision": "a62a804a8a009876ca59105f7899938a1349f4b3",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/rs/xhandler",
+			"repository": "https://github.com/rs/xhandler",
+			"revision": "ed27b6fd65218132ee50cd95f38474a3d8a2cd12",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "9313baa13d9262e49d07b20ed57dceafcd7240cc",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
+			"importpath": "golang.org/x/net/websocket",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "9313baa13d9262e49d07b20ed57dceafcd7240cc",
+			"branch": "master",
+			"path": "/websocket"
+		},
+		{
+			"importpath": "gopkg.in/fatih/set.v0",
+			"repository": "https://gopkg.in/fatih/set.v0",
+			"revision": "27c40922c40b43fe04554d8223a402af3ea333f3",
+			"branch": "v0.1.1"
+		},
+		{
+			"importpath": "gopkg.in/tomb.v2",
+			"repository": "https://gopkg.in/tomb.v2",
+			"revision": "14b3d72120e8d10ea6e6b7f87f7175734b1faab8",
+			"branch": "v2"
+		}
+	]
+}
