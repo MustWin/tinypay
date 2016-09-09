@@ -1,0 +1,35 @@
+{
+  "tabs": [
+    {
+      "id": "ForUsers",
+      "tab_title": "For Users",
+      "title": "For Users",
+      "steps": [
+        {
+          "id": "step-install-metamask",
+          "title": "Install the Metamask chrome extension",
+          "text": "You can get it from <a href=\"https://metamask.io/\">Metamask.io</a>",
+          "partial": "metamask"
+        },
+        {
+          "id": "step-put-money-in",
+          "title": "Send money to your wallet",
+          "partial": "blank"
+        },
+        {
+          "id": "step-install-metamask",
+          "title": "Install the Metamask chrome extension",
+          "partial": "blank"
+        }
+      ]
+    },
+    {
+      "id": "ForCompanies",
+      "tab_title": "For Companies",
+      "title": "For Companies",
+      "steps": [
+
+      ]
+    }
+  ]
+}

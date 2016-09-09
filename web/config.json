@@ -2,7 +2,9 @@
 	"template_dir": "templates",
 	"content_dir": "contents",
 	"output_dir": "output",
-
+	"plugins": {
+    "template_engine": "punch-engine-handlebars"
+  },
 	"server": {
 		"port": 9009
 	},
@@ -11,7 +13,7 @@
 		"/css/all.css": [
 			"/css/materialize.css",
 			"/css/style.css"
-		]	,
+		],
 		"/js/micropay.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
