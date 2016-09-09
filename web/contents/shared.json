@@ -3,7 +3,7 @@
 	"footer-text": "Copyright 2016 MustWin LLC, all rights reserved",
 	"navbar": [
 		{ "label": "Home", "href": "/" },
-    { "label": "How it works", "href": "/how-it-works" },
+    { "label": "How it works", "href": "/howitworks" },
 		{ "label": "Demo", "href": "/demo" },
 		{ "label": "Sign up", "href": "/sign-up" }
 	]
