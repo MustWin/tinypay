@@ -11,7 +11,7 @@ contract('DomainMicropay', function(accounts) {
         done();
       })
       .catch((err) => { done("Contract initialization failed"); });
-  })
+  });
 
   describe('signUp', function() {
     var unconfirmedDomain = "signup.unconfirmed.domain";
@@ -81,19 +81,19 @@ contract('DomainMicropay', function(accounts) {
 
     it("Should emit ClientConfirmed event when ConfirmClient succeeds.", function(done) {
       var clientConfirmations = contract.ClientConfirmed({fromBlock: "latest"});
-      clientConfirmations.watch((err, conf) => {
+      var watchFn = (err, conf) => {
+        clientConfirmations.stopWatching(watchFn);
         if (err) {
           done(err);
         } else {
           done();
         }
-      });
+      };
+      clientConfirmations.watch(watchFn);
       contract.signUp(unconfirmedDomain, 100, {from: clientWallet1})
         .then(() => {
           contract.confirmClient(unconfirmedDomain, clientWallet1, 100, {from: micropayWallet})
-            .catch((err) => {
-              done("confirmation failed");
-            });
+            .catch((err) => {});
         });
     });
   });

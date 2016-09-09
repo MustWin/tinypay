@@ -38,7 +38,11 @@ contract UserClientMicropay {
   }
 
   // Get contract for sending user
-  function getContract() returns (address) {
-    return userToContract[msg.sender];
+  function getContract() returns (UserClient) {
+    var userClientContract = userToContract[msg.sender];
+    if (userClientContract == address(0x0)) {
+      throw;
+    }
+    return userClientContract;
   }
 }

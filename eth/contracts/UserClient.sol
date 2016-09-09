@@ -9,7 +9,7 @@ contract UserClient {
     pricePerHit = _price;
   }
 
-  function RegisterHit() {
+  function registerHit() {
     if (msg.sender != user) {
       throw;
     }
