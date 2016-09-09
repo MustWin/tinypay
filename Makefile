@@ -1,9 +1,20 @@
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-all: eth web
+all: eth/build web/output orcl
 
-eth: $(call rwildcard, eth, *.sol *.js)
+clean:
+	-rm -rf eth/build
+	-rm -rf web/output
+	cd oracles && go clean ./...
+
+eth/build: $(call rwildcard, eth, *.sol *.js)
 	cd eth && truffle build
 
-web: $(call rwildcard, web, *.sol *.js)
+web/output: $(call rwildcard, web, *.json *.mustache *.markdown *.js)
 	cd web && punch g
+
+orcl: $(call rwildcard, oracles, *.go)
+	cd oracles && go install -v ./...
+
+
+.PHONY: all clean orcl
