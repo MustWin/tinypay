@@ -8,13 +8,17 @@ clean:
 	cd oracles && go clean ./...
 
 eth/build: $(call rwildcard, eth, *.sol *.js)
-	cd eth && truffle build
+	cd eth; \
+		truffle build; \
+		cp build/app.js ../web/templates/js/contracts.js
 
 web/output: $(call rwildcard, web, *.json *.mustache *.markdown *.js)
-	cd web && punch g
+	cd web; \
+		punch g
 
 orcl: $(call rwildcard, oracles, *.go)
-	cd oracles && go install -v ./...
+	cd oracles; \
+		go install -v ./...
 
 
 .PHONY: all clean orcl

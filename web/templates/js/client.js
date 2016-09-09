@@ -25,7 +25,7 @@ MP._Build = function() {
 /** Setup the micropay configuration for your application:
   Options is a hash with the following required keys:
     pricePerView: the number of wei to charge per view. Must be numerical, string values are accepted.
-    userClientContractAddress: The hexadecimal address of the UserClient contract relevant to this pageview, should begin with 0x...
+    userClientMicropayContractAddress: The hexadecimal address of the UserClientMicropay contract relevant to this pageview, should begin with 0x...
     callback: The callback function to call when the payment has been received
 */
 MP.Configure = function(opts) {

@@ -13,6 +13,7 @@
 			"/css/style.css"
 		]	,
 		"/js/micropay.js": [
+			"/js/contracts.js",
 			"/js/load_deps.js",
 			"/js/client.js",
 			"/js/micropay/capabilities.js",
