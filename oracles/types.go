@@ -13,6 +13,18 @@ var (
 	requestID = 0 //NB: not thread safe
 )
 
+type LogEvent struct {
+	Removed          bool     `json:"removed,omitempty"`
+	LogIndex         string   `json:"logIndex,omitempty"`
+	BlockNumber      string   `json:"blockNumber,omitempty"`
+	BlockHash        string   `json:"blockHash,omitempty"`
+	TransactionHash  string   `json:"transactionHash,omitempty"`
+	TransactionIndex string   `json:"transactionIndex,omitempty"`
+	Address          string   `json:"address,omitempty"`
+	Data             string   `json:"data,omitempty"`
+	Topics           []string `json:"topics,omitempty"`
+}
+
 func NewBlockFilter() interface{} {
 	requestID++
 	return &filterRequest{
@@ -71,8 +83,8 @@ type blockResult struct {
 }
 
 type eventResult struct {
-	ID     string `json:"id,omitempty"`
-	Result []log  `json:"result,omitempty"`
+	ID     string     `json:"id,omitempty"`
+	Result []LogEvent `json:"result,omitempty"`
 }
 
 type topicFilter struct {
@@ -80,15 +92,4 @@ type topicFilter struct {
 	ToBlock   string   `json:"toBlock,omitempty"`
 	Address   string   `json:"address,omitempty"`
 	Topics    []string `json:"topics,omitempty"`
-}
-
-type log struct {
-	LogIndex         string   `json:"logIndex,omitempty"`
-	BlockNumber      string   `json:"blockNumber,omitempty"`
-	BlockHash        string   `json:"blockHash,omitempty"`
-	TransactionHash  string   `json:"transactionHash,omitempty"`
-	TransactionIndex string   `json:"transactionIndex,omitempty"`
-	Address          string   `json:"address,omitempty"`
-	Data             string   `json:"data,omitempty"`
-	Topics           []string `json:"topics,omitempty"`
 }

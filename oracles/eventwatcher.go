@@ -1,7 +1,6 @@
 package oracles
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ethereum/go-ethereum/rpc"
@@ -12,29 +11,40 @@ import (
 // and emitting the log data of the event on the Ch channel.
 type EventWatcher struct {
 	tomb.Tomb
-	Ch       chan interface{}
-	interval time.Duration
-	url      string
+	Ch           chan LogEvent
+	interval     time.Duration
+	url          string
+	watchAccount string
+	topics       []string
 }
 
 // NewEventWatcher returns a EventWatcher.
-func NewEventWatcher(url string, pollInterval time.Duration) *EventWatcher {
+func NewEventWatcher(url string, pollInterval time.Duration, account string, topics ...string) *EventWatcher {
 	bw := &EventWatcher{
-		Ch:       make(chan interface{}),
-		interval: pollInterval,
-		url:      url,
+		Ch:           make(chan LogEvent),
+		interval:     pollInterval,
+		url:          url,
+		watchAccount: account,
+		topics:       topics,
 	}
 	bw.Go(bw.loop)
 	return bw
 }
 
+func (w *EventWatcher) Stop() error {
+	w.Kill(nil)
+	return w.Wait()
+}
+
 func (w *EventWatcher) loop() error {
+	defer close(w.Ch)
+
 	client, err := rpc.NewHTTPClient(w.url)
 	if err != nil {
 		return err
 	}
 
-	err = client.Send(NewEventFilter(""))
+	err = client.Send(NewEventFilter(w.watchAccount, w.topics...))
 	if err != nil {
 		return err
 	}
@@ -48,8 +58,9 @@ func (w *EventWatcher) loop() error {
 	evt := eventResult{}
 	for {
 		select {
+		case <-w.Dying():
+			return nil
 		case <-time.After(w.interval):
-			fmt.Printf(".")
 			err = client.Send(NewFilterChanges(filterID.Result))
 			if err != nil {
 				return err
@@ -58,8 +69,8 @@ func (w *EventWatcher) loop() error {
 			if err != nil {
 				return err
 			}
-			for _, rr := range evt.Result {
-				w.Ch <- rr
+			for _, logEvt := range evt.Result {
+				w.Ch <- logEvt
 			}
 		}
 	}

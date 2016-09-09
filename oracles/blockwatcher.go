@@ -27,7 +27,14 @@ func NewBlockWatcher(url string, pollInterval time.Duration) *BlockWatcher {
 	return bw
 }
 
+func (w *BlockWatcher) Stop() error {
+	w.Kill(nil)
+	return w.Wait()
+}
+
 func (w *BlockWatcher) loop() error {
+	defer close(w.Ch)
+
 	client, err := rpc.NewHTTPClient(w.url)
 	if err != nil {
 		return err
@@ -47,6 +54,8 @@ func (w *BlockWatcher) loop() error {
 	br := blockResult{}
 	for {
 		select {
+		case <-w.Dying():
+			return nil
 		case <-time.After(w.interval):
 			err = client.Send(NewFilterChanges(filterID.Result))
 			if err != nil {
