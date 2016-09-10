@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/MustWin/micropay/oracles"
+	"oracles"
 )
 
 func main() {

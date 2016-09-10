@@ -2,6 +2,8 @@
 
 ### Development
 
-Get the source code: `go get github.com/MustWin/micropay/oracles/...`
+This project uses [gb](getgb.io) to build the Oracles artifacts.
 
+To build this project first make sure you have [Go](golang.org) installed, then install [gb](getgb.io) with: `go get github.com/constabulary/gb`
 
+Once those two are installed use `make` to build the library and binaries, which will appear in the `pkg` and `bin` folders respectively.
