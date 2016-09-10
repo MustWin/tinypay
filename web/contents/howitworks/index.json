@@ -3,7 +3,8 @@
     {
       "id": "ForUsers",
       "tab_title": "For Users",
-      "title": "For Users",
+      "title": "The fastest, cheapest way to pay for content",
+      "opener_content": "for_users_intro",
       "steps": [
         {
           "id": "step-install-metamask",

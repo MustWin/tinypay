@@ -12,8 +12,10 @@
         </div>
         {{#each tabs}}
           <div id="{{id}}" class="col s10">
-            <h2>{{tab_title}}</h2
-            {{#each steps}}
+            <h2>{{tab_title}}</h2>
+						{{{lookup @root (lookup . "opener_content")}}}
+
+						{{#each steps}}
               <section id="{{id}}">
                 <h3>{{title}}</h3>
                 <p>{{body}}</p>
