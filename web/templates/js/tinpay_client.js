@@ -1,27 +1,3 @@
-/**
-  Add components that will be added to MP after dependencies are loaded
-*/
-MP.Add = function(fn) {
-  if (!this.initFns) {
-    this.initFns = [];
-  }
-  this.initFns.push(fn);
-};
-
-/**
-  Actually add all the components added with 'Add' to MP.
-  This is always called after the deps are loaded. Make sure we trigger the app Init if Init was already called by consumers
-*/
-MP._Build = function() {
-  _.each(MP.initFns, function(fn) {
-    fn();
-  });
-  MP._buildComplete = true;
-  if (MP._initCalled) {
-    MP.Init();
-  }
-};
-
 /** Setup the micropay configuration for your application:
   Options is a hash with the following required keys:
     pricePerView: the number of wei to charge per view. Must be numerical, string values are accepted.
@@ -33,6 +9,9 @@ MP.Configure = function(opts) {
   return MP; // for chaining
 }
 
+/**
+  Fill in an element with id="micropay-button" with our payment button.
+*/
 MP._doInit = function() {
   console.log("MicropayInit");
   MP.state = {};
@@ -42,15 +21,4 @@ MP._doInit = function() {
     el: $("#micropay-button"),
     model: MP.state.buttonModel
   });
-}
-
-/*
-  Fill in an element with id="micropay-button" with our payment button.
-  This is called by client code, so may be executed before dependencies have loaded, so we queue it up within a promise
-*/
-MP.Init = function() {
-  if (MP._buildComplete) {
-    MP._doInit();
-  }
-  MP._initCalled = true;
 }

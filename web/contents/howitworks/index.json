@@ -8,8 +8,7 @@
       "steps": [
         {
           "id": "step-install-metamask",
-          "title": "Install the Metamask chrome extension",
-          "text": "You can get it from <a href=\"https://metamask.io/\">Metamask.io</a>",
+          "title": "Install the Metamask browser extension",
           "partial": "metamask"
         },
         {

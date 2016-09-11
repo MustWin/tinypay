@@ -14,12 +14,21 @@
 			"/css/materialize.css",
 			"/css/style.css"
 		],
-		"/js/micropay.js": [
+		"/js/client.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
-			"/js/client.js",
-			"/js/micropay/capabilities.js",
-			"/js/micropay/micropay_button.js"
+			"/js/tinpay_client.js",
+			"/js/client/capabilities.js",
+			"/js/client/micropay_button.js"
+		],
+		"/js/installer.js": [
+			"/js/load_deps.js",
+			"/js/client/capabilities.js",
+			"/js/install/test.js",
+			"/js/install/install_metamask.js",
+			"/js/install/detect.min.js",
+			"/js/install_base.js"
 		]
+
 	}
 }
