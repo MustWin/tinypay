@@ -8,19 +8,18 @@
       "steps": [
         {
           "id": "step-install-metamask",
-          "title": "Install the Metamask chrome extension",
-          "text": "You can get it from <a href=\"https://metamask.io/\">Metamask.io</a>",
+          "title": "Install the Metamask extension",
           "partial": "metamask"
         },
         {
-          "id": "step-put-money-in",
+          "id": "step-seed-wallet",
           "title": "Send money to your wallet",
-          "partial": "blank"
+          "partial": "send_money"
         },
         {
-          "id": "step-install-metamask",
-          "title": "Install the Metamask chrome extension",
-          "partial": "blank"
+          "id": "step-pay-for-content",
+          "title": "Pay for content with a click",
+          "partial": "pay_for_content"
         }
       ]
     },

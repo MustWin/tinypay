@@ -1,1 +1,1 @@
-Tinypay is powered by the blockchain, so transaction fees are always low. Once you have Tinypay, you just click on our tinypay buttons to reveal content from participating media companies.
+Tinypay is powered by the blockchain, so transaction fees are always low. Once you have Tinypay, you just click on our tinypay buttons to reveal content from participating media companies. This is new technology, so it requires a browser that supports [Web3](https://github.com/ethereum/wiki/wiki/JavaScript-API) **( THIS IS TOO TECHNICAL, WRITE A MEDIUM POST )**

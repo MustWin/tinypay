@@ -72,3 +72,37 @@ var MP = {name: "micropay"};
     LoadDeps().then(finish);
   }
 })();
+
+/**
+  Add components that will be added to MP after dependencies are loaded
+*/
+MP.Add = function(fn) {
+  if (!this.initFns) {
+    this.initFns = [];
+  }
+  this.initFns.push(fn);
+};
+
+/**
+  Actually add all the components added with 'Add' to MP.
+  This is always called after the deps are loaded. Make sure we trigger the app Init if Init was already called by consumers
+*/
+MP._Build = function() {
+  _.each(MP.initFns, function(fn) {
+    fn();
+  });
+  MP._buildComplete = true;
+  if (MP._initCalled) {
+    MP.Init();
+  }
+};
+
+/**
+  This is called by client code, so may be executed before dependencies have loaded, so we queue it up within a promise
+*/
+MP.Init = function() {
+  if (MP._buildComplete) {
+    MP._doInit();
+  }
+  MP._initCalled = true;
+}
