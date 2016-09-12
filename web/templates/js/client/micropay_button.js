@@ -10,8 +10,8 @@ MP.Add(function() {
       this.listenTo(this.model, "change", this.render);
       this.render();
     },
-    enabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">flash_on</i>TinyPay</button>'),
-    disabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</button>'),
+    enabledTemplate: _.template('<button class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">flash_on</i>TinyPay</button>'),
+    disabledTemplate: _.template('<button class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</button>'),
     payForContent: function() {
       var self = this
         , userClientMicropayContract = UserClientMicropay.at(this.model.get('userClientMicropayContractAddress'));
@@ -19,7 +19,7 @@ MP.Add(function() {
         contract.registerHit()
           .then(() => { self.model.get('callback')(); })
           .catch((err) => { console.log("PAYMENT FAILED"); });
-      }
+      };
       var getUserContractAndHit = (errFn) => {
         userClientMicropayContract.getContract.call()
           .then((contractAddr) => {

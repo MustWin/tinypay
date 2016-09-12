@@ -24,9 +24,9 @@
 		"/js/installer.js": [
 			"/js/load_deps.js",
 			"/js/client/capabilities.js",
-			"/js/install/test.js",
-			"/js/install/install_metamask.js",
 			"/js/install/detect.min.js",
+			"/js/install/install_metamask.js",
+			"/js/install/seed_wallet.js",
 			"/js/install_base.js"
 		]
 
