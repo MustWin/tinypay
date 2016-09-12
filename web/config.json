@@ -22,6 +22,12 @@
 			"/js/client/micropay_button.js",
 			"/js/micropay/signup.js"
 		],
+		"/js/signup.js": [
+			"/js/contracts.js",
+			"/js/load_deps.js",
+			"/js/client/capabilities.js",
+			"/js/micropay/signup.js"
+		],
 		"/js/installer.js": [
 			"/js/load_deps.js",
 			"/js/client/capabilities.js",

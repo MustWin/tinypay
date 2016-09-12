@@ -1,0 +1,20 @@
+{
+	"tagline": "Unlocking micropayments for publishers",
+	"cta": "Signup",
+	"features": [
+		{ "icon": "flash_on",
+			"title": "Easily collect small amounts of money",
+			"text": "By just dropping our javascript library onto your pages, you can begin charging for your content, we'll handle all the setup."
+		},
+    {
+			"icon": "groups",
+			"title": "Provide a seamless user experience",
+			"text": "Users can send you a micropayment with a single click to reveal content, hide advertisements, or sign up for newsletters."
+		},
+		{
+			"icon": "trending_up",
+			"title": "The smallest transaction fees",
+			"text": "We charge a 1% fee on transactions with publishers. It doesn't get any better than that!"
+		}
+	]
+}

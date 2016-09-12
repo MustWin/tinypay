@@ -1,3 +1,13 @@
+MP._doInit = function() {
+  console.log("MicropayInit");
+  MP.state = {};
+  MP.state.capabilities = new MP.Capabilities({enabled: false});
+  MP.state.signupForm = new MP.SignupForm({
+    el: $("#signup-form"),
+    model: MP.state.buttonModel
+  });
+}
+
 MP.Add(function() {
   MP.SignupForm = Backbone.View.extend({
     el: $("#signup-form"),

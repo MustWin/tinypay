@@ -5,6 +5,6 @@
 		{ "label": "Home", "href": "/" },
     { "label": "How it works", "href": "/howitworks" },
 		{ "label": "Demo", "href": "/demo" },
-		{ "label": "Sign up", "href": "/sign-up" }
+		{ "label": "Sign up", "href": "/signup" }
 	]
 }
