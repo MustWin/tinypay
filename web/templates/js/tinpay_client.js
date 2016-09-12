@@ -3,6 +3,7 @@
     pricePerView: the number of wei to charge per view. Must be numerical, string values are accepted.
     userClientMicropayContractAddress: The hexadecimal address of the UserClientMicropay contract relevant to this pageview, should begin with 0x...
     callback: The callback function to call when the payment has been received
+    targetId (Optional): The css selector of the div to fill with the tinypay button
 */
 MP.Configure = function(opts) {
   MP._configuration = opts;
@@ -10,7 +11,7 @@ MP.Configure = function(opts) {
 }
 
 /**
-  Fill in an element with id="micropay-button" with our payment button.
+  Fill in an element with id="tinypay-button" with our payment button.
 */
 MP._doInit = function() {
   console.log("MicropayInit");
@@ -23,7 +24,7 @@ MP._doInit = function() {
   });
 
   MP.state.button = new MP.MicropayButton({
-    el: $("#micropay-button"),
+    el: $(MP._configuration.targetId || "#tinypay-button"),
     model: MP.state.buttonModel
   });
 }

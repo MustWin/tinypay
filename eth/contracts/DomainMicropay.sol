@@ -9,11 +9,18 @@ contract DomainMicropay {
     uint256 pricePerHit;
     UserClientMicropay contractAddr;
   }
-  mapping(string => Client) domainToClient;
-  address micropayWallet;
+  mapping(string => Client) private domainToClient;
+  address private micropayWallet;
 
   event ClientCreated(string domain, address client, uint256 _pricePerHit);
   event ClientConfirmed(string domain, address client, address clientContract);
+
+  modifier onlyMicropay {
+      if (msg.sender != micropayWallet){
+          throw;
+      }
+      _
+  }
 
   function DomainMicropay() {
     micropayWallet = msg.sender;
@@ -23,7 +30,7 @@ contract DomainMicropay {
           This function emits ClientCreated if a new client is added.
   * @param domain The domain to associate with this contract. This should be a FQDN matching the regex: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
   */
-  function signUp(string domain, uint256 _pricePerHit) {
+  function signUp(string domain, uint256 _pricePerHit) public {
     // Validate domain
     if (bytes(domain).length < 4) { // e.g. a.co
       throw;
@@ -36,7 +43,7 @@ contract DomainMicropay {
       throw;
     }
 
-    var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, msg.sender, _pricePerHit)});
+    var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, micropayWallet, msg.sender, _pricePerHit)});
     domainToClient[domain] = newClient;
     ClientCreated(domain, msg.sender, _pricePerHit);
   }
@@ -46,10 +53,7 @@ contract DomainMicropay {
   *  @param clientDomain The domain we're confirming
   *  @param clientAddr The wallet address we're confirming
   */
-  function confirmClient(string clientDomain, address clientAddr, uint256 pricePerHit) returns (bool) {
-    if (msg.sender != micropayWallet) {
-      throw;
-    }
+  function confirmClient(string clientDomain, address clientAddr, uint256 pricePerHit) onlyMicropay public returns (bool)  {
     Client client = domainToClient[clientDomain];
     if (!client.confirmed && client.addr == clientAddr && client.pricePerHit == pricePerHit) {
       client.confirmed = true;
@@ -61,7 +65,7 @@ contract DomainMicropay {
   /** @dev Retrieve the UserClientPayment contract address for a confirmed domain
   * @param domain This should be a FQDN matching the regex: /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/
   */
-  function getPaymentContractForDomain(string domain) returns (UserClientMicropay) {
+  function getPaymentContractForDomain(string domain) public returns (UserClientMicropay) {
     Client c = domainToClient[domain];
     if (!c.confirmed) {
       throw;
@@ -70,10 +74,7 @@ contract DomainMicropay {
   }
 
   // Only callable by micropay
-  function withdraw(uint256 amount) {
-    if (msg.sender != micropayWallet) {
-      throw;
-    }
+  function withdraw(uint256 amount) onlyMicropay  public {
     if (this.balance < amount) {
       throw;
     }

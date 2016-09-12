@@ -19,7 +19,12 @@
               <section id="{{id}}">
                 <h3><span class="step-indicator">{{inc @index}}</span> {{title}}</h3>
                 <p>{{body}}</p>
-								{{> (lookup . "partial") }}
+								{{#if partial}}
+									{{> (lookup . "partial") }}
+								{{/if}}
+								{{#if partial_content }}
+									{{{lookup @root (lookup . "partial_content")}}}
+								{{/if}}
               </section>
             {{/each}}
 

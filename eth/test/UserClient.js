@@ -35,22 +35,18 @@ contract('UserClient', function(accounts) {
 
   it("Should move pricePerHit from sender to userClientMicropay", function(done) {
     var balanceCompare = (cb) => {
-      var clientBalance, contractBalance;
-      clientBalance = web3.eth.getBalance(clientWallet1);
+      var userBalance, contractBalance;
+      userBalance = web3.eth.getBalance(userWallet1);
       contractBalance = web3.eth.getBalance(userClientMicropayContract.contract.address);
-
-      cb(clientBalance, contractBalance);
+      cb(userBalance, contractBalance);
     };
 
-    balanceCompare((initClientBal, initContractBal) => {
-      console.log("*************************")
-      userClientContract.registerHit({from: userWallet1})
+    balanceCompare((initUserBal, initContractBal) => {
+      userClientContract.registerHit({from: userWallet1, value: pricePerHit})
         .then(() => {
-          console.log("*************************")
-          balanceCompare((finalClientBal, finalContractBal) => {
-            console.log("*************************")
-            assert.equal(initClientBal.minus(finalClientBal), 100, "Client balance wasn't decremented");
-            assert.equal(initContractBal.minus(finalContractBal), -100, "Contract balance wasn't incremented");
+          balanceCompare((finalUserBal, finalContractBal) => {
+            assert(initUserBal.toNumber() > finalUserBal.toNumber(), pricePerHit, "User balance wasn't decremented");
+            assert.equal(initContractBal.minus(finalContractBal).toNumber(), -pricePerHit, "Contract balance wasn't incremented");
             done();
           });
         })

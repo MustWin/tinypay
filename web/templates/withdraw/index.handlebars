@@ -1,0 +1,57 @@
+{{> header }}
+
+	<div class="section no-pad-bot" id="index-banner">
+		<div class="container">
+      <div class="row">
+        <div class="col s8 push-s2">
+          <h3>{{title}}</h3>
+          <div id="withdraw-form">
+            <div class="has-wallet">
+              <div id="step-1" class="step">
+                <form id="address-form">
+                  <label for="wallet-address">Your Tinypay contract address</label>
+                  <div class="error">
+                    <p class="errorMsg"></p>
+                  </div>
+                  <input type="text" name="address" placeholder="0x1k2j3jsd8sfa0df0939j3j3jrdjis9"/>
+                  <div class="col s6">
+                    <button type="submit" class="col s4 btn waves-effect waves-light">Submit</button>
+                    <div class="progress col s5 push-s1">
+                      <div class="indeterminate"></div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div id="step-2" class="step">
+                <form id="withdraw-form">
+                  <p>Your contract has <span id="withdraw-max"></span> wei.</p>
+                  <div class="error">
+                    <a href="/withdraw">Go back</a>
+                    <p class="errorMsg"></p>
+
+                  </div>
+                  <label for="withdraw-amount">Amount to withdraw (in wei)</label>
+                  <input type="text" name="withdraw_amount"/>
+                  <div class="col s6">
+                    <button type="submit" class="col s4 btn waves-effect waves-light">Submit</button>
+                    <div class="progress col s5 push-s1">
+                      <div class="indeterminate"></div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div id="step-3" class="step">
+                <h3><i class="material-icons medium">done</i>Withdraw succeeded!</h3>
+              </div>
+            </div>
+            <div class="no-wallet">
+              No wallet
+            </div>
+          </div>
+        </div>
+      </div>
+		</div>
+	</div>
+
+{{> footer }}
+<script src="/js/withdraw.js"></script>

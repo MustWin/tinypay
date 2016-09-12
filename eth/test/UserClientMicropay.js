@@ -1,12 +1,13 @@
 contract('UserClientMicropay', function(accounts) {
 
-  var micropayWallet, clientWallet1, clientWallet2, userClientMicropayContract, pricePerHit;
+  var micropayWallet, clientWallet1, clientWallet2, userClientContract, userClientMicropayContract, pricePerHit;
   before(function(done) {
     micropayWallet = accounts[0];
     clientWallet1 = accounts[1];
     clientWallet2 = accounts[2];
     clientWallet3 = accounts[3];
-    pricePerHit = 100;
+    userWallet1 = accounts[4];
+    pricePerHit = 100000000000000;
     var domain = "ucm.domain";
     DomainMicropay.new({from: micropayWallet})
       .then((c) => {
@@ -19,6 +20,14 @@ contract('UserClientMicropay', function(accounts) {
           })
           .then((ucmContract) => {
             userClientMicropayContract = UserClientMicropay.at(ucmContract);
+            return userClientMicropayContract.registerUser({from: userWallet1})
+          })
+          .then(() => {
+            return userClientMicropayContract.getContract.call({from: userWallet1})
+          })
+          .then((ucContract) => {
+            userClientContract = UserClient.at(ucContract);
+            userClientContract.registerHit({from: userWallet1});
             done();
           })
           .catch((err) => { done("Contract initialization failed: " + err); });
@@ -37,33 +46,29 @@ contract('UserClientMicropay', function(accounts) {
     it("should give micropayWallet 1% and the client 99%", function(done) {
       var micropayBal, contractBal, clientBal;
       var getBalances = function(cb) {
-        var count = 0
-          , promiseCount = 3;
-        var finish = function() {
-          count++;
-          if (count == promiseCount) {
-            cb();
-          }
-        };
-        web3.eth.getBalance(micropayWallet).then((mpVal) => { micropayBal = mpVal; finish(); });
-        web3.eth.getBalance(userClientMicropayContract).then((ucmBal) => { contractBal = ucmBal; finish(); });
-        web3.eth.getBalance(clientWallet1).then((cBal) => { clientBal = cBal; finish(); })
+        micropayBal = web3.eth.getBalance(micropayWallet);
+        clientBal = web3.eth.getBalance(clientWallet1);
+        contractBal = web3.eth.getBalance(userClientMicropayContract.address);
+        cb();
       };
       getBalances(() => {
-        userClientMicropayContract.withdraw(100, {from: micropayWallet})
+        userClientMicropayContract.withdraw(pricePerHit, {from: clientWallet1})
           .then(() => {
             var initMicropayBal = micropayBal
               , initContractBal = contractBal
               , initClientBal = clientBal;
             getBalances(() => {
-              assert.equal(micropayBal, initMicropayBal + 1, "micropayBal should get 1%");
-              assert.equal(clientBal, initClientBal + 99, "clientBal should get 99%");
-              assert.equal(contractBal, initContractBal - 100, "contractbal should lose 100%");
+              console.log(initMicropayBal, initContractBal, micropayBal, contractBal);
+              assert.equal(micropayBal, initMicropayBal.plus(0.01 * pricePerHit), "micropayBal should get 1%");
+              assert.equal(clientBal, initClientBal.plus(0.99 * pricePerHit), "clientBal should get 99%");
+              assert.equal(contractBal, initContractBal.minus(pricePerHit), "contractbal should lose 100%");
               done();
             })
             ;
           })
-          .catch((err) => { done(err); });
+          .catch((err) => {
+            done(err);
+          });
       });
     });
   });
