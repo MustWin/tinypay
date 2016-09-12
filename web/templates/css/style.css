@@ -16,3 +16,15 @@
 #min-height {
   min-height: 500px;
 }
+
+.progress {
+  display: none;
+}
+
+.error {
+  display: none;
+}
+
+.errorMsg {
+  color: red;
+}

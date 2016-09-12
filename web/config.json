@@ -28,6 +28,13 @@
 			"/js/install/install_metamask.js",
 			"/js/install/seed_wallet.js",
 			"/js/install_base.js"
+		],
+		"/js/withdraw.js": [
+			"/js/contracts.js",
+			"/js/load_deps.js",
+			"/js/client/capabilities.js",
+			"/js/withdraw/withdraw_form.js",
+			"/js/withdraw_base.js"
 		]
 
 	}

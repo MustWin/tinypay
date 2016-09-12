@@ -48,6 +48,11 @@
           "id": "step-install-js",
           "title": "Add the Tinypay JS to your page",
           "partial_content": "install_js"
+        },
+        {
+          "id": "step-collect-funds",
+          "title": "Collect funds",
+          "partial_content": "collect_funds"
         }
       ]
     }
