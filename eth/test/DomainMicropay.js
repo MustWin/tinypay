@@ -5,7 +5,7 @@ contract('DomainMicropay', function(accounts) {
     micropayWallet = accounts[0];
     clientWallet1 = accounts[1];
     clientWallet2 = accounts[2];
-    DomainMicropay.new({from: micropayWallet})
+    DomainMicropay.new({from: micropayWallet, value: 300})
       .then((c) => {
         contract = c;
         done();
@@ -135,15 +135,25 @@ contract('DomainMicropay', function(accounts) {
     });
   });
 
-/*
+
   describe('withdraw', function() {
-    it("Should not allow anyone but micropayWallet to withdraw funds.", function(done) {
-      assert.fail(1, 2, "write a test");
+    it("Should allow micropayWallet to withdraw funds.", function(done) {
+      contract.withdraw(100, {from: micropayWallet})
+        .then(() => { done(); })
+        .catch((err) => { done(err); });
+    });
+
+    it("Should not allow non-micropayWallet to withdraw funds.", function(done) {
+      contract.withdraw(100, {from: clientWallet1})
+        .then(() => { done("Withdraw should error"); })
+        .catch((err) => { done(); });
     });
 
     it("Should not allow overdrawing from the contract.", function(done) {
-      assert.fail(1, 2, "write a test");
+      contract.withdraw(300, {from: micropayWallet})
+        .then(() => { done("Withdraw should error"); })
+        .catch((err) => { done(); });
     });
   });
-*/
+
 });
