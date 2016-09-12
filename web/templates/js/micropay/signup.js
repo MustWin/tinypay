@@ -1,38 +1,36 @@
 MP.Add(function() {
-  MP.SignupButton = Backbone.View.extend({
-    tagName: "button",
+  MP.SignupForm = Backbone.View.extend({
+    el: $("#signup-form"),
     className: "",
     events: {
-      "click":  "signup"
+      "submit":  "signup"
     },
     initialize: function() {
-      this.listenTo(this.model, "change", this.render);
-      this.render();
-    },
-    enabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">flash_on</i>Signup</button>'),
-    disabledTemplate: _.template('<button class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Login</button>'),
-    signup: function() {
-      var self = this
-        , domainMicropayContract = DomainMicropay.at("0x697e8c46889e29d70f5ca586ae72337076f7921d");
 
-      domainMicropayContract.signUp(self.model.get('domain'), self.model.get('amount'))
-        .then(() => { self.model.get('callback')(); })
-        .catch((err) => { console.log(err); });
     },
-    render: function() {
-      if (this.model.get('capabilities').get('enabled')) {
-          this.$el.html(this.enabledTemplate(this.model.attributes));
-      } else {
-        this.$el.html(this.disabledTemplate(this.model.attributes));
-      }
-      return this;
+    signup: function(e) {
+      var self = this
+        , domainMicropayContract = DomainMicropay.at("0x5fb42a0963aab547db613f02f0e37f15aa26797c");
+
+      var domain = $("#domain").val();
+      var pricePerHit = $("price-per-hit").val();
+
+      pricePerHit = (pricePerHit !== null && pricePerHit !== '')?parseInt(pricePerHit):0;
+      
+      domainMicropayContract.signUp(domain, pricePerHit, {from: "0xC76bC5f9180795751CDdf1427dadeA97E7912Bf0"})
+        .then((result) => { console.log(result) })
+        .catch((err) => { console.log(err); });
+
+      e.preventDefault();
+
+      return false;
     }
   });
 
 });
 
 MP.Add(function() {
-  MP.SignupButtonModel = Backbone.Model.extend({
+  MP.SignupModel = Backbone.Model.extend({
     initialize: function() {
 
     },
