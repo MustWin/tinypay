@@ -27,8 +27,28 @@
       "id": "ForCompanies",
       "tab_title": "For Companies",
       "title": "For Companies",
+      "opener_content": "for_companies_intro",
       "steps": [
-
+        {
+          "id": "step-install-metamask",
+          "title": "Install the Metamask extension",
+          "partial": "metamask"
+        },
+        {
+          "id": "step-contract-sign-up",
+          "title": "Agree to our contract",
+          "partial_content": "agree_contract"
+        },
+        {
+          "id": "step-confirm-domain",
+          "title": "Confirm your domain",
+          "partial_content": "confirm_domain"
+        },
+        {
+          "id": "step-install-js",
+          "title": "Add the Tinypay JS to your page",
+          "partial_content": "install_js"
+        }
       ]
     }
   ]
