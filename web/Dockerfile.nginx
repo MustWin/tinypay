@@ -1,0 +1,11 @@
+FROM nginx
+
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+COPY bin/run.sh /run.sh
+COPY output/ /usr/share/nginx/html
+
+RUN ln -snf $(find /usr/share/nginx/html -name 'index.*.html' | grep 'html/index') /usr/share/nginx/html/index.html
+
+CMD ["/run.sh"]
