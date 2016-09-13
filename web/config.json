@@ -23,8 +23,11 @@
 		],
 		"/js/installer.js": [
 			"/js/load_deps.js",
+			"/js/shared/form_mixin.js",
 			"/js/client/capabilities.js",
 			"/js/install/detect.min.js",
+			"/js/install/agree_contract.js",
+			"/js/install/confirm_domain.js",
 			"/js/install/install_metamask.js",
 			"/js/install/seed_wallet.js",
 			"/js/install_base.js"
@@ -32,6 +35,7 @@
 		"/js/withdraw.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
+			"/js/shared/form_mixin.js",
 			"/js/client/capabilities.js",
 			"/js/withdraw/withdraw_form.js",
 			"/js/withdraw_base.js"

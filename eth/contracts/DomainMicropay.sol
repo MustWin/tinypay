@@ -12,7 +12,7 @@ contract DomainMicropay {
   mapping(string => Client) private domainToClient;
   address private micropayWallet;
 
-  event ClientCreated(string domain, address client, uint256 _pricePerHit);
+  event ClientCreated(string domain, address client, uint256 _pricePerHit, address contractAddr);
   event ClientConfirmed(string domain, address client, address clientContract);
 
   modifier onlyMicropay {
@@ -45,7 +45,7 @@ contract DomainMicropay {
 
     var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, micropayWallet, msg.sender, _pricePerHit)});
     domainToClient[domain] = newClient;
-    ClientCreated(domain, msg.sender, _pricePerHit);
+    ClientCreated(domain, msg.sender, _pricePerHit, contractAddr);
   }
 
   /**@dev Mark this client as approved for a given domain, this should only accept messages from our trusted wallet.
