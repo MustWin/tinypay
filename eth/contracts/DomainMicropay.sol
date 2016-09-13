@@ -7,12 +7,13 @@ contract DomainMicropay {
     address addr;
     bool confirmed;
     uint256 pricePerHit;
+    bytes32 confirmationHash;
     UserClientMicropay contractAddr;
   }
   mapping(string => Client) private domainToClient;
   address private micropayWallet;
 
-  event ClientCreated(string domain, address client, uint256 _pricePerHit, address contractAddr);
+  event ClientCreated(string domain, address client, uint256 _pricePerHit, bytes32 confirmationHash, address contractAddr);
   event ClientConfirmed(string domain, address client, address clientContract);
 
   modifier onlyMicropay {
@@ -43,9 +44,17 @@ contract DomainMicropay {
       throw;
     }
 
-    var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, micropayWallet, msg.sender, _pricePerHit)});
+    var _confirmationHash = block.blockhash(block.number);
+    var newClient = Client({
+        domain: domain,
+        addr: msg.sender,
+        confirmed: false,
+        pricePerHit: _pricePerHit,
+        confirmationHash: _confirmationHash,
+        contractAddr: new UserClientMicropay(this, micropayWallet, msg.sender, _pricePerHit)
+    });
     domainToClient[domain] = newClient;
-    ClientCreated(domain, msg.sender, _pricePerHit, newClient.contractAddr);
+    ClientCreated(domain, msg.sender, _pricePerHit, _confirmationHash, newClient.contractAddr);
   }
 
   /**@dev Mark this client as approved for a given domain, this should only accept messages from our trusted wallet.
