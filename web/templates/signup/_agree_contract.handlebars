@@ -1,0 +1,27 @@
+<div id="agree-contract-form" class="row">
+  <div class="no-wallet">
+    Once you've created a wallet in step 1, you'll be able to register your company with a simple Tinypay contract.
+    This contract is what allows you to charge your users directly to view content.
+  </div>
+  <div class="has-wallet">
+    <form id="signup-form">
+      <div class="error">
+        <p class="errorMsg"></p>
+      </div>
+      <p>You're ready to setup your Tinypay contract. Let us know what you want to charge for a piece of content on your site.</p>
+      <label for="amount">The amount you'd like to charge your users to reveal content (in wei)</label>
+      <input type="text" name="amount" placeholder="8350000000000000 (~$0.10, 9/12/16)"/>
+      <p>What domain will you be charging for content on?</p>
+      <label for="domain">The domain you own that will be showing content. </label>
+      <input type="text" name="domain" placeholder="mypublishinghouse.com"/>
+      <div class="col s6">
+        <button type="submit" class="col s4 btn waves-effect waves-light">Sign Up</button>
+        <div class="progress col s5 push-s1">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
+    </form>
+    <div id="signup-success" style="display: none;">
+    </div>
+  </div>
+</div>

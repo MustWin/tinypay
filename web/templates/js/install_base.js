@@ -15,6 +15,14 @@ MP._doInit = function() {
     el: $("#seed-wallet"),
     model: MP.state.capabilities
   });
+  MP.state.agreeContract = new MP.AgreeContract({
+    el: $("#agree-contract-form"),
+    model: MP.state.capabilities
+  });
+  MP.state.confirmDomain = new MP.ConfirmDomain({
+    el: $("#confirm-domain-form"),
+    model: MP.state.capabilities
+  });
 }
 
 MP.Init();
