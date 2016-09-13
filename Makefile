@@ -5,7 +5,8 @@ all: eth/build web/output orcl
 clean:
 	-rm -rf eth/build
 	-rm -rf web/output
-	cd oracles && go clean ./...
+	@cd oracles ;\
+		make clean
 
 eth/build: $(call rwildcard, eth, *.sol *.js)
 	@cd eth; \
