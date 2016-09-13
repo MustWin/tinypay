@@ -19,7 +19,7 @@ contract DomainMicropay {
       if (msg.sender != micropayWallet){
           throw;
       }
-      _;
+      _
   }
 
   function DomainMicropay() {
@@ -45,7 +45,7 @@ contract DomainMicropay {
 
     var newClient = Client({domain: domain, addr: msg.sender, confirmed: false, pricePerHit: _pricePerHit, contractAddr: new UserClientMicropay(this, micropayWallet, msg.sender, _pricePerHit)});
     domainToClient[domain] = newClient;
-    ClientCreated(domain, msg.sender, _pricePerHit, contractAddr);
+    ClientCreated(domain, msg.sender, _pricePerHit, newClient.contractAddr);
   }
 
   /**@dev Mark this client as approved for a given domain, this should only accept messages from our trusted wallet.

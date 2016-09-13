@@ -3,5 +3,4 @@ module.exports = function(deployer) {
   deployer.autolink();
   deployer.deploy(DomainMicropay);
   deployer.deploy(UserClientMicropay);
-  deployer.deploy(UserClient);
 };
