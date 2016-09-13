@@ -19,7 +19,7 @@ contract DomainMicropay {
       if (msg.sender != micropayWallet){
           throw;
       }
-      _
+      _;
   }
 
   function DomainMicropay() {
