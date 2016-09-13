@@ -1,11 +1,8 @@
-import "./UserClient.sol";// as UserClient
-
 contract UserClientMicropay {
   address client;
   address micropay;
   address domainMicropayContract;
   uint256 public pricePerHit;
-  mapping(address => UserClient ) userToContract;
 
   function UserClientMicropay(address _domainMicropayContract, address _micropay, address _client, uint256 _pricePerHit) {
     client = _client;
@@ -14,39 +11,44 @@ contract UserClientMicropay {
     domainMicropayContract = _domainMicropayContract;
   }
 
+  event DispatchAmount(uint256);
+
   // Can only be called by us and client. Sends 1% to us 99% to client
   function withdraw(uint256 amount) {
 
     if (msg.sender != micropay && msg.sender != client) {
       throw;
     }
-/*
-    if (amount > this.balance) {
+
+    var clientAmount = amount * 99 / 100;
+    var micropayAmount = amount / 100;
+
+    if (clientAmount + micropayAmount > this.balance) {
       throw;
     }
 
-    if (!domainMicropayContract.send( amount / 100 )) {
+    if (amount < 1 ether) {
       throw;
     }
-    if (!client.send( amount * 99 / 100 )) {
-      throw;
-    }*/
 
-  }
-
-  // Register the sending user, creating and saving a new contract
-  function registerUser() returns (UserClient) {
-    var userClientContract = new UserClient(pricePerHit, this, msg.sender);
-    userToContract[msg.sender] = userClientContract;
-    return userClientContract;
-  }
-
-  // Get contract for sending user
-  function getContract() returns (UserClient) {
-    var userClientContract = userToContract[msg.sender];
-    if (userClientContract == address(0x0)) {
+    if (!domainMicropayContract.send( micropayAmount )) {
       throw;
     }
-    return userClientContract;
+
+    if (!client.send( clientAmount )) {
+      throw;
+    }
+
   }
+
+  function registerHit() public {
+    if (msg.value < pricePerHit) {
+      throw;
+    }
+
+    if (!this.send(pricePerHit)) {
+      throw;
+    }
+  }
+
 }
