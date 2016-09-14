@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: ethereum-peers
+  name: ethereum-peers
+spec:
+  ports:
+    # The port that this service should serve on.
+    - port: 30303
+      targetPort: 30303
+  # Label keys and values that must match in order to receive traffic for this service.
+  selector:
+    name: ethereum
+  type: LoadBalancer
