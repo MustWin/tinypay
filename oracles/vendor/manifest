@@ -2,6 +2,12 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/BurntSushi/toml",
+			"repository": "https://github.com/BurntSushi/toml",
+			"revision": "99064174e013895bbd9b025c31100bd1d9b590ca",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/ethereum/go-ethereum/accounts",
 			"repository": "https://github.com/ethereum/go-ethereum",
 			"revision": "fed692f67e81bd3937a5efab38f56a9b99d04d41",
@@ -149,6 +155,12 @@
 			"path": "/leveldb"
 		},
 		{
+			"importpath": "github.com/urfave/cli",
+			"repository": "https://github.com/urfave/cli",
+			"revision": "61f519fe5e57c2518c03627b194899a105838eba",
+			"branch": "master"
+		},
+		{
 			"importpath": "golang.org/x/crypto/pbkdf2",
 			"repository": "https://go.googlesource.com/crypto",
 			"revision": "e311231e83195f401421a286060d65643f9c9d40",
@@ -214,6 +226,18 @@
 			"importpath": "gopkg.in/tomb.v2",
 			"repository": "https://gopkg.in/tomb.v2",
 			"revision": "14b3d72120e8d10ea6e6b7f87f7175734b1faab8",
+			"branch": "v2"
+		},
+		{
+			"importpath": "gopkg.in/urfave/cli.v1",
+			"repository": "https://gopkg.in/urfave/cli.v1",
+			"revision": "a14d7d367bc02b1f57d88de97926727f2d936387",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"revision": "31c299268d302dd0aa9a0dcf765a3d58971ac83f",
 			"branch": "v2"
 		}
 	]
