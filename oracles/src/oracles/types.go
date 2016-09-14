@@ -33,19 +33,12 @@ func NewBlockFilter() interface{} {
 	}
 }
 
-func NewEventFilter(address string, topics ...string) interface{} {
+func NewEventFilter(filters ...TopicFilter) interface{} {
 	requestID++
 	return &filterRequest{
 		ID:     fmt.Sprintf("evt_%d", requestID),
 		Method: EthNewFilter,
-		Params: []topicFilter{
-			{
-				Address:   address,
-				FromBlock: EthLatest,
-				ToBlock:   EthLatest,
-				Topics:    topics,
-			},
-		},
+		Params: filters,
 	}
 }
 
@@ -60,10 +53,21 @@ func NewFilterChanges(filterID string) interface{} {
 	}
 }
 
+type TopicFilter struct {
+	BlockRange
+	Address string   `json:"address,omitempty"`
+	Topics  []string `json:"topics,omitempty"`
+}
+
+type BlockRange struct {
+	From string `json:"fromBlock,omitempty"`
+	To   string `json:"toBlock,omitempty"`
+}
+
 type filterRequest struct {
 	ID     string        `json:"id,omitempty"`
 	Method string        `json:"method"`
-	Params []topicFilter `json:"params,omitempty"`
+	Params []TopicFilter `json:"params,omitempty"`
 }
 
 type filterChangesRequest struct {
@@ -85,11 +89,4 @@ type blockResult struct {
 type eventResult struct {
 	ID     string     `json:"id,omitempty"`
 	Result []LogEvent `json:"result,omitempty"`
-}
-
-type topicFilter struct {
-	FromBlock string   `json:"fromBlock,omitempty"`
-	ToBlock   string   `json:"toBlock,omitempty"`
-	Address   string   `json:"address,omitempty"`
-	Topics    []string `json:"topics,omitempty"`
 }
