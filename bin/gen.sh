@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SCRIPTPATH="$( cd "$(dirname "$0")"; pwd -P)"
-
 command -v solc >/dev/null 2>&1 || (echo "Missing 'solc' compiler, see README.md"; exit)
 command -v abigen >/dev/null 2>&1 || (echo "Missing 'abigen' tool, see README.md"; exit)
 
@@ -16,7 +14,7 @@ trap "rm -rf $TDIR" EXIT
 # Generate .abi files
 #
 
-pushd "$SCRIPTPATH/.."
+pushd $(dirname $(dirname $0))
 trap "popd" EXIT
 
 echo "Compile contracts..."
