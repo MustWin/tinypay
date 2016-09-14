@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ethereum
+  labels:
+    name: ethereum
+spec:
+  containers:
+    - resources:
+        limits:
+          cpu: 1
+      image: ethereum/client-go:alpine
+      name: ethereum
+      args:
+        - "--cache=768"
+      env:
+      ports:
+        - containerPort: 8545
+          name: ethereum
+      volumeMounts:
+          # This name must match the volumes.name below.
+        - name: ethereum-blockchain-disk
+          mountPath: /var/lib/blockchain
+  volumes:
+    - name: ethereum-blockchain-disk
+      gcePersistentDisk:
+        # This disk must already exist.
+        pdName: ethereum-blockchain-disk
+        fsType: ext4

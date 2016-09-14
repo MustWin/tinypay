@@ -19,3 +19,11 @@
 The `oracles` sub-project is built with [Go](https://golang.org), using [gb](getgb.io); see the [README](oracles/README.md) for details.
 
 [Browser-solidity](https://ethereum.github.io/browser-solidity/) may also be useful for compiling/editing contracts
+
+
+## Deployment on Google Container Engine
+
+1. Make sure you have permissions on our GCE account on the tinypay project
+2. [Download](https://cloud.google.com/sdk/downloads) and Install GCE SDK
+3. `gcloud init`, use `us-central-1b` when asked
+4. `gcloud components install kubectl`
