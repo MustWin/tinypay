@@ -27,3 +27,10 @@ The `oracles` sub-project is built with [Go](https://golang.org), using [gb](get
 2. [Download](https://cloud.google.com/sdk/downloads) and Install GCE SDK
 3. `gcloud init`, use `us-central-1b` when asked
 4. `gcloud components install kubectl`
+5. `gcloud container clusters get-credentials tinypay --zone us-central1-b --project tinypay-143322`
+
+Now you can use the kubernetes consul:
+`kubectl proxy`
+
+Or you can run deploymnents: (TODO: there is probably a better feature for this)
+`kubectl delete pod web; kubectl create -f web_pod.yaml`
