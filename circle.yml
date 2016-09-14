@@ -4,5 +4,6 @@ machine:
 
 dependencies:
   override:
+    - make
     - docker info
     - docker build -t mustwin/tinypay:latest -f web/Dockerfile.nginx ./web
