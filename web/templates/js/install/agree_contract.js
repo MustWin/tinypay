@@ -9,7 +9,7 @@ MP.Add(function() {
       _.extend(this, MP.FormMixin);
       this.listenTo(this.model, "change", this.render);
       this.micropayContract = DomainMicropay.deployed();
-      startWatches();
+      this.startWatches();
       this.render();
     },
     startWatches: function() {
@@ -32,9 +32,9 @@ MP.Add(function() {
       this._disableForm(evt);
       try {
         this._handleFormEvt(evt, function(form) {
-          this.model.set({domain: form.domain});
+          self.model.set({domain: form.domain});
           // TODO: Domain validation
-          micropayContract.signUp(form.domain, form.amount)
+          self.micropayContract.signUp(form.domain, form.amount)
             .then(function() { /* This triggers an event on success that we're listening for */})
             .catch(function(err) { self._showError(evt, "signup-form", err); });
         });

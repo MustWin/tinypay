@@ -8,8 +8,8 @@ spec:
   containers:
     - resources:
         limits:
-          cpu: 1
-      image: TODO
+          cpu: 0.5
+      image: slapbassist-docker-tinypay.bintray.io/mustwin/tinypay:latest
       name: web
       args:
       env:
@@ -17,4 +17,6 @@ spec:
         - containerPort: 80
           name: web
       volumeMounts:
+  imagePullSecrets:
+      - name: jeffregistrykey
   volumes:

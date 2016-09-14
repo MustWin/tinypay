@@ -5697,7 +5697,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060405260358060106000396000f36503063fc68da550606060405260e060020a600035046396e4ee3d81146024575b6007565b602435600435026060908152602090f3",
     "events": {},
-    "updated_at": 1473451879824
+    "updated_at": 1473817908700,
+    "links": {},
+    "address": "0x1f2e394965e995d0f2153366e92d4d2f080f54ea"
   }
 };
 
@@ -6386,7 +6388,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1473801413159
+    "updated_at": 1473817908696,
+    "links": {},
+    "address": "0x96514adfc1c8afcdcb845534441ee8c422809579"
   }
 };
 
@@ -6922,7 +6926,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060405260008054600160a060020a03191633179055610130806100246000396000f3606060405260e060020a60003504630900f010811461003c578063445df0ac146100c05780638da5cb5b146100c9578063fdacd576146100db575b005b61003a60043560008054600160a060020a039081163390911614156100bc57604080516001547ffdacd576000000000000000000000000000000000000000000000000000000008252600482015290518392600160a060020a0384169263fdacd5769260248281019392829003018183876161da5a03f115610002575050505b5050565b61010160015481565b610113600054600160a060020a031681565b61003a60043560005433600160a060020a03908116911614156100fe5760018190555b50565b60408051918252519081900360200190f35b60408051600160a060020a03929092168252519081900360200190f3",
     "events": {},
-    "updated_at": 1473801413163
+    "updated_at": 1473817908703,
+    "address": "0x80cd23edd2c74fab061940a7e82e8e2c9f99b9d1",
+    "links": {}
   }
 };
 
@@ -7426,7 +7432,8 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060408181528060c3833960a090525160805160018054600160a060020a03199081163317909155600280549091168217905560008290555050607d8060466000396000f3606060405260e060020a6000350463fff89feb8114601a575b005b60186001543373ffffffffffffffffffffffffffffffffffffffff9081169116146044576002565b565b6002546000805473ffffffffffffffffffffffffffffffffffffffff9290921691606082818181858883f193505050501515604257600256",
     "events": {},
-    "updated_at": 1473451879834
+    "updated_at": 1473817908706,
+    "links": {}
   }
 };
 
@@ -7987,7 +7994,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1473801413166
+    "updated_at": 1473817908727,
+    "links": {},
+    "address": "0xdf193e0e5ca5912a8d72bc518b1384467f92dd03"
   }
 };
 
@@ -45020,8 +45029,8 @@ module.exports = transfer;
 
 },{"crypto":59}],224:[function(require,module,exports){
 module.exports = {
-  "DomainMicropay": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/DomainMicropay.sol.js"),
   "ConvertLib": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/ConvertLib.sol.js"),
+  "DomainMicropay": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/DomainMicropay.sol.js"),
   "Migrations": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/Migrations.sol.js"),
   "UserClientMicropay": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/UserClientMicropay.sol.js"),
   "UserClient": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/UserClient.sol.js"),
@@ -45059,7 +45068,7 @@ window.addEventListener('load', function() {
 
                                                                 
 
-  [ConvertLib,DomainMicropay,UserClient,Migrations,UserClientMicropay].forEach(function(contract) {         
+  [ConvertLib,DomainMicropay,Migrations,UserClient,UserClientMicropay].forEach(function(contract) {         
 
     contract.setProvider(window.web3.currentProvider);          
 
