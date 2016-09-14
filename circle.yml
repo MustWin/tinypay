@@ -5,6 +5,7 @@ machine:
 dependencies:
   override:
     - npm install truffle -g
+    - npm install punch -g
     - make
     - docker info
     - docker build -t mustwin/tinypay:latest -f web/Dockerfile.nginx ./web
