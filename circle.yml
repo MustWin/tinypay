@@ -16,4 +16,5 @@ deployment:
     branch: master
     commands:
       - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay.bintray.io
-      - docker push shippedrepos-docker-18591856-e261-11e5-b773-0242ac110200.bintray.io/tinypay:latest
+      - docker tag mustwin/tinypay:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay:latest
+      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay:latest
