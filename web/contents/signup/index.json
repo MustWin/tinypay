@@ -35,7 +35,7 @@
           "partial": "metamask"
         },
         {
-          "id": "step-contract-sign-up",
+          "id": "step-agree-contract",
           "title": "Create your client contract",
           "partial": "agree_contract"
         },

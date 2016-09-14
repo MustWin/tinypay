@@ -29,8 +29,9 @@ MP.Add(function() {
     renderMoney: function(balance) {
       this.$el.find(".has-money").show();
       this.$el.find(".no-money").hide();
-      this.$el.find("#wallet-amount").html(balance.toString(10));
+      this.$el.find("#wallet-amount").html($.number(balance.toString(10), 0));
       $('#step-seed-wallet .step-indicator').html('<i class="large material-icons">done</i>');
+      $('#step-pay-for-content .step-indicator').html('<i class="large material-icons">done</i>');
     }
   });
 

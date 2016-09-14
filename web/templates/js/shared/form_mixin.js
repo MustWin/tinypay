@@ -1,7 +1,8 @@
 MP.Add(function() {
   MP.FormMixin = {
     render: function() {
-      if (this.model.get('enabled')) {
+      if ((this.model.get('capabilities') && this.model.get('capabilities').get('enabled'))
+          || (this.model.get('enabled')) {
         this.renderWeb3();
       } else {
         this.renderNoWeb3();

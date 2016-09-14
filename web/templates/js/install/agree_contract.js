@@ -32,15 +32,14 @@ MP.Add(function() {
       this._disableForm(evt);
       try {
         this._handleFormEvt(evt, function(form) {
-          this.domain = form.domain;
+          this.model.set({domain: form.domain});
           // TODO: Domain validation
           micropayContract.signUp(form.domain, form.amount)
-            .then(() => { /* This triggers an event on success that we're listening for */})
-            .catch((err) => { self._showError(evt, "signup-form", err); });
-          });
+            .then(function() { /* This triggers an event on success that we're listening for */})
+            .catch(function(err) { self._showError(evt, "signup-form", err); });
         });
       } catch(err) {
-          self._showError(evt, "signup-form", err);
+        self._showError(evt, "signup-form", err);
       }
       return false;
     },
@@ -49,8 +48,8 @@ MP.Add(function() {
                       "<code><%= contractAddr %></code>",
     renderSuccess: function(contractAddr) {
       this.$el.find("#signup-form").hide();
-      this.$el.find("#signup-success").html(_.template(this.successTemplate, {contractAddr: contractAddr}))
-      // TODO: Fix checkmark
+      this.$el.find("#signup-success").html(_.template(this.successTemplate, {contractAddr: contractAddr}));
+      $('#step-agree-contract .step-indicator').html('<i class="large material-icons">done</i>');
     }
   });
 

@@ -23,10 +23,13 @@
 			"/js/micropay/signup.js"
 		],
 		"/js/installer.js": [
+			"/js/contracts.js",
+			"/js/lib/jquery.number.min.js",
 			"/js/load_deps.js",
 			"/js/shared/form_mixin.js",
 			"/js/client/capabilities.js",
 			"/js/install/detect.min.js",
+			"/js/install/signup_domain.js",
 			"/js/install/agree_contract.js",
 			"/js/install/confirm_domain.js",
 			"/js/install/install_metamask.js",

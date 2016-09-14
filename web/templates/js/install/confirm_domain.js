@@ -6,33 +6,34 @@ MP.Add(function() {
     },
     initialize: function() {
       _.extend(this, MP.FormMixin);
-      this.listenTo(this.model, "change", this.render);
+      this.listenTo(this.model, "change", this.setDomain);
       this.micropayContract = DomainMicropay.deployed();
-      startWatches();
+      this.clientConfirmations = this.micropayContract.ClientConfirmed({fromBlock: "latest"});
+      this.startWatches();
       this.render();
     },
+    checkConfig: function(config) {
+      var self = this;
+      console.log(conf);
+      if (client.domain == this.model.get('domain')) {
+        self.renderSuccess(conf);
+        self.clientConfirmations.stopWatching(watchFn);
+      }
+    },
     startWatches: function() {
-      var clientConfirmations = this.micropayContract.ClientConfirmed({fromBlock: "latest"});
-      clientConfirmations.watch(function(err, conf) {
+      var self = this;
+      this.clientConfirmations.watch(function(err, conf) {
         if (err) {
           console.log(err);
           return;
         }
-        console.log(conf);
-        TIE IN DOMAIN
-        if (client.domain == this.domain) {
-          self.renderSuccess(conf);
-          clientConfirmations.stopWatching(watchFn);
-        }
+        self.checkConfig(conf);
       });
     },
-    successTemplate: "<p>Your contract has been created and is available at this address. " +
-                      "Save it somewhere safe, you'll need it to withdraw your funds.</p>" +
-                      "<code><%= contractAddr %></code>",
     renderSuccess: function(contractAddr) {
       this.$el.find("#domain-form").hide();
-      this.$el.find("#confirm-success").html(_.template(this.successTemplate, {contractAddr: contractAddr}))
-      // TODO: Fix checkmark
+      this.$el.find("#confirm-success").show();
+      $('#step-confirm-domain .step-indicator').html('<i class="large material-icons">done</i>');
     }
   });
 
