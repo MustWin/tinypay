@@ -2,7 +2,7 @@ MP.Add(function() {
   MP.FormMixin = {
     render: function() {
       if ((this.model.get('capabilities') && this.model.get('capabilities').get('enabled'))
-          || (this.model.get('enabled')) {
+          || this.model.get('enabled')) {
         this.renderWeb3();
       } else {
         this.renderNoWeb3();
@@ -15,7 +15,7 @@ MP.Add(function() {
     renderWeb3: function() {
       this.$el.find(".has-wallet").show();
       this.$el.find(".no-wallet").hide();
-      this._showStep(1);
+      this._showStep && this._showStep(1); // Used on withdraw_form
     },
     _handleFormEvt: function(evt, cb) {
       console.log(evt)
@@ -37,6 +37,6 @@ MP.Add(function() {
       this.$el.find("#" + stepId + " .error").show();
       this.$el.find("#" + stepId+ " .errorMsg").html(errMsg);
       this._enableForm(evt);
-    },
-  }
+    }
+  };
 });
