@@ -16,7 +16,7 @@ trap "rm -rf $TDIR" EXIT
 # Generate .abi files
 #
 
-pushd $SCRIPTPATH/..
+pushd "$SCRIPTPATH/.."
 trap "popd" EXIT
 
 echo "Compile contracts..."
