@@ -6,6 +6,14 @@ dependencies:
   override:
     - npm install truffle -g
     - npm install punch -g
+    - go get github.com/constabulary/gb/...
     - make
     - docker info
     - docker build -t mustwin/tinypay:latest -f web/Dockerfile.nginx ./web
+
+deployment:
+  prod:
+    branch: master
+    commands:
+      - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay.bintray.io
+      - docker push shippedrepos-docker-18591856-e261-11e5-b773-0242ac110200.bintray.io/tinypay:latest
