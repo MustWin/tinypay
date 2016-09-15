@@ -9,12 +9,16 @@ dependencies:
     - go get github.com/constabulary/gb/...
     - make
     - docker info
-    - docker build -t mustwin/tinypay:latest -f web/Dockerfile.nginx ./web
+    - docker build -t mustwin/tinypay-web:latest -f web/Dockerfile.nginx ./web
+    - docker build -t mustwin/tinypay-oracle:latest -f web/Dockerfile ./oracles
 
 deployment:
   prod:
     branch: master
     commands:
-      - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay.bintray.io
-      - docker tag mustwin/tinypay:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay:latest
-      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay:latest
+      - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay-web.bintray.io
+      - docker tag mustwin/tinypay-web:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-web:latest
+      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-web:latest
+      - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay-oracle.bintray.io
+      - docker tag mustwin/tinypay-oracle:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest
+      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest

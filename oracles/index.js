@@ -18,11 +18,17 @@ if (program.rpchost === undefined) {
   program.rpchost = 'localhost';
 }
 
+if (program.rpcport === undefined) {
+  program.rpcport = 8545;
+}
+
 var opts = {
-  rpc_port: program.rpcport || 8545,
+  rpc_port: program.rpcport,
   rpc_host: program.rpchost,
   check_interval: (program.interval || 10) * 1000,
 };
+
+console.log('Connecting to rcp host: ' + program.rpchost + ':' + program.rpcport);
 
 var client = rpc.Client.$create(opts.rpc_port, opts.rpc_host);
 

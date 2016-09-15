@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oracle
+  labels:
+    name: oracle
+spec:
+  containers:
+    - resources:
+        limits:
+          cpu: 0.5
+      image: slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest
+      name: oracle
+      args:
+      env:
+        - name: ETHEREUM_SERVICE_HOST
+          value: 10.3.255.215
+      ports:
+        - containerPort: 80
+          name: oracle
+      volumeMounts:
+  imagePullSecrets:
+      - name: jeffregistrykey
+  volumes:
