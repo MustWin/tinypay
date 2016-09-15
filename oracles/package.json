@@ -1,0 +1,23 @@
+{
+  "name": "oracles",
+  "version": "0.1.0",
+  "description": "Micropay Oracle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MustWin/micropay.git"
+  },
+  "author": "John Weldon <johnweldon4@gmail.com>",
+  "private": true,
+  "bin": {
+    "oracles": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "ethereumjs-abi": "^0.6.4",
+    "json-rpc2": "^1.0.2"
+  }
+}
