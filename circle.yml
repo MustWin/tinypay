@@ -10,7 +10,7 @@ dependencies:
     - make
     - docker info
     - docker build -t mustwin/tinypay-web:latest -f web/Dockerfile.nginx ./web
-    - docker build -t mustwin/tinypay-oracle:latest -f web/Dockerfile ./oracles
+    - docker build -t mustwin/tinypay-oracle:latest -f oracles/Dockerfile ./oracles
 
 deployment:
   prod:
