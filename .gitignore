@@ -1,3 +1,4 @@
 web/output
 eth/build
 .DS_Store
+.idea/
