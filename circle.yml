@@ -17,8 +17,8 @@ deployment:
     branch: master
     commands:
       - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay-web.bintray.io
-      - docker tag mustwin/tinypay-web:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-web:latest
-      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-web:latest
+      - docker tag mustwin/tinypay-web:latest slapbassist-docker-tinypay-web.bintray.io/mustwin/tinypay-web:latest
+      - docker push slapbassist-docker-tinypay-web.bintray.io/mustwin/tinypay-web:latest
       - docker login -u slapbassist -p 4820e7670ea705bbc3bc027065e9d86914744671 -e jeffpuro@gmail.com slapbassist-docker-tinypay-oracle.bintray.io
-      - docker tag mustwin/tinypay-oracle:latest slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest
-      - docker push slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest
+      - docker tag mustwin/tinypay-oracle:latest slapbassist-docker-tinypay-oracle.bintray.io/mustwin/tinypay-oracle:latest
+      - docker push slapbassist-docker-tinypay-oracle.bintray.io/mustwin/tinypay-oracle:latest
