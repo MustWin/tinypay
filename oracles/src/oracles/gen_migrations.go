@@ -16,6 +16,22 @@ import (
 // MigrationsABI is the input ABI used to generate the binding from.
 const MigrationsABI = `[{"constant":false,"inputs":[{"name":"new_address","type":"address"}],"name":"upgrade","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"last_completed_migration","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"completed","type":"uint256"}],"name":"setCompleted","outputs":[],"payable":false,"type":"function"},{"inputs":[],"type":"constructor"}]`
 
+// MigrationsBin is the compiled bytecode used for deploying new contracts.
+const MigrationsBin = `606060405260008054600160a060020a0319163317905561014f806100246000396000f3606060405260e060020a60003504630900f010811461003f578063445df0ac146100ce5780638da5cb5b146100dc578063fdacd576146100f3575b610002565b346100025761011e60043560008054600160a060020a039081163390911614156100ca57604080516001547ffdacd576000000000000000000000000000000000000000000000000000000008252600482015290518392600160a060020a0384169263fdacd576926024828101939282900301818387803b156100025760325a03f115610002575050505b5050565b346100025761012060015481565b3461000257610132600054600160a060020a031681565b346100025761011e60043560005433600160a060020a039081169116141561011b5760018190555b50565b005b60408051918252519081900360200190f35b60408051600160a060020a03929092168252519081900360200190f3`
+
+// DeployMigrations deploys a new Ethereum contract, binding an instance of Migrations to it.
+func DeployMigrations(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *Migrations, error) {
+	parsed, err := abi.JSON(strings.NewReader(MigrationsABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(MigrationsBin), backend)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &Migrations{MigrationsCaller: MigrationsCaller{contract: contract}, MigrationsTransactor: MigrationsTransactor{contract: contract}}, nil
+}
+
 // Migrations is an auto generated Go binding around an Ethereum contract.
 type Migrations struct {
 	MigrationsCaller     // Read-only binding to the contract

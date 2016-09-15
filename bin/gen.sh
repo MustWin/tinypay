@@ -22,7 +22,7 @@ cat eth/contracts/* | \
   sed -e 's/_$/_;/g' | \
   sed -e 's/import ".*";//g' | \
   sed -e '1s/^/pragma solidity ^0.4.0;/' | \
-  solc --add-std -o $TDIR --abi --optimize
+  solc --add-std -o $TDIR --abi --optimize --bin
 echo "Done."
 
 #
@@ -36,8 +36,9 @@ do
   trunc=${abifile%.abi}
   typename=${trunc#$TDIR/}
   filename="oracles/src/oracles/gen_$(echo $typename | tr '[:upper:]' '[:lower:]').go"
+  binfile="${trunc}.bin"
 
   echo "  generating ${filename}..."
-  abigen --out ${filename} --pkg oracles --type ${typename} --abi $abifile
+  abigen --out ${filename} --pkg oracles --type ${typename} --abi $abifile --bin ${binfile}
 done
 echo "Done."

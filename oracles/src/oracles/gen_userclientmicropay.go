@@ -16,6 +16,22 @@ import (
 // UserClientMicropayABI is the input ABI used to generate the binding from.
 const UserClientMicropayABI = `[{"constant":true,"inputs":[],"name":"pricePerHit","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"registerHit","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"_domainMicropayContract","type":"address"},{"name":"_micropay","type":"address"},{"name":"_client","type":"address"},{"name":"_pricePerHit","type":"uint256"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"uint256"}],"name":"DispatchAmount","type":"event"}]`
 
+// UserClientMicropayBin is the compiled bytecode used for deploying new contracts.
+const UserClientMicropayBin = `60606040526040516080806101f3833960e06040529051905160a05160c05160008054600160a060020a031990811684179091556001805482168517905560038290556002805490911685179055505050506101948061005f6000396000f3606060405260e060020a600035046303e00f4381146100345780632e1a7d4d14610042578063fff89feb1461008b575b610002565b34610002576100a260035481565b34610002576100b4600435600154600090819033600160a060020a039081169116148015906100815750600054600160a060020a039081163390911614155b156100bb57610002565b34610002576100b460035434101561016357610002565b60408051918252519081900360200190f35b005b505050565b60646063840204915060648304905030600160a060020a03163181830111156100e357610002565b670de0b6b3a76400008310156100f857610002565b600254604051600160a060020a03919091169082156108fc029083906000818181858888f19350505050151561012d57610002565b60008054604051600160a060020a03919091169184156108fc02918591818181858888f1935050505015156100b657610002565b565b600354604051600160a060020a0330169180156108fc02916000818181858888f1935050505015156101615761000256`
+
+// DeployUserClientMicropay deploys a new Ethereum contract, binding an instance of UserClientMicropay to it.
+func DeployUserClientMicropay(auth *bind.TransactOpts, backend bind.ContractBackend, _domainMicropayContract common.Address, _micropay common.Address, _client common.Address, _pricePerHit *big.Int) (common.Address, *types.Transaction, *UserClientMicropay, error) {
+	parsed, err := abi.JSON(strings.NewReader(UserClientMicropayABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(UserClientMicropayBin), backend, _domainMicropayContract, _micropay, _client, _pricePerHit)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &UserClientMicropay{UserClientMicropayCaller: UserClientMicropayCaller{contract: contract}, UserClientMicropayTransactor: UserClientMicropayTransactor{contract: contract}}, nil
+}
+
 // UserClientMicropay is an auto generated Go binding around an Ethereum contract.
 type UserClientMicropay struct {
 	UserClientMicropayCaller     // Read-only binding to the contract

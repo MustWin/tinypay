@@ -16,6 +16,22 @@ import (
 // ConvertLibABI is the input ABI used to generate the binding from.
 const ConvertLibABI = `[{"constant":false,"inputs":[{"name":"amount","type":"uint256"},{"name":"conversionRate","type":"uint256"}],"name":"convert","outputs":[{"name":"convertedAmount","type":"uint256"}],"payable":false,"type":"function"}]`
 
+// ConvertLibBin is the compiled bytecode used for deploying new contracts.
+const ConvertLibBin = `606060405260398060106000396000f3650402149dba9b50606060405260e060020a600035046396e4ee3d81146024575b6007565b34600757602435600435026060908152602090f3`
+
+// DeployConvertLib deploys a new Ethereum contract, binding an instance of ConvertLib to it.
+func DeployConvertLib(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *ConvertLib, error) {
+	parsed, err := abi.JSON(strings.NewReader(ConvertLibABI))
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(ConvertLibBin), backend)
+	if err != nil {
+		return common.Address{}, nil, nil, err
+	}
+	return address, tx, &ConvertLib{ConvertLibCaller: ConvertLibCaller{contract: contract}, ConvertLibTransactor: ConvertLibTransactor{contract: contract}}, nil
+}
+
 // ConvertLib is an auto generated Go binding around an Ethereum contract.
 type ConvertLib struct {
 	ConvertLibCaller     // Read-only binding to the contract
