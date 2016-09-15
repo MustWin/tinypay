@@ -8,13 +8,13 @@ spec:
   containers:
     - resources:
         limits:
-          cpu: 0.5
-      image: slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-oracle:latest
+          cpu: 0.4
+      image: slapbassist-docker-tinypay-oracle.bintray.io/mustwin/tinypay-oracle:latest
       name: oracle
       args:
       env:
         - name: ETHEREUM_SERVICE_HOST
-          value: 10.3.255.215
+          value: 10.3.252.188
       ports:
         - containerPort: 80
           name: oracle

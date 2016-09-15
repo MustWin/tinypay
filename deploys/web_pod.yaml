@@ -9,7 +9,7 @@ spec:
     - resources:
         limits:
           cpu: 0.5
-      image: slapbassist-docker-tinypay.bintray.io/mustwin/tinypay-web:latest
+      image: slapbassist-docker-tinypay-web.bintray.io/mustwin/tinypay-web:latest
       name: web
       args:
       env:
