@@ -18,11 +18,6 @@ MP._doInit = function() {
   MP.state = {};
   MP.state.capabilities = new MP.Capabilities({enabled: false});
   MP.state.buttonModel = new MP.MicropayButtonModel(_.extend(MP._configuration, {capabilities: MP.state.capabilities}));
-  MP.state.signupForm = new MP.SignupForm({
-    el: $("#signup-form"),
-    model: MP.state.buttonModel
-  });
-
   MP.state.button = new MP.MicropayButton({
     el: $(MP._configuration.targetId || "#tinypay-button"),
     model: MP.state.buttonModel

@@ -17,10 +17,9 @@
 		"/js/client.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
-			"/js/tinpay_client.js",
 			"/js/client/capabilities.js",
 			"/js/client/micropay_button.js",
-			"/js/micropay/signup.js"
+			"/js/tinypay_client.js"
 		],
 		"/js/installer.js": [
 			"/js/contracts.js",

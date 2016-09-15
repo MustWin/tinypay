@@ -15,22 +15,24 @@ MP.Add(function() {
     payForContent: function() {
       var self = this
         , userClientMicropayContract = UserClientMicropay.at(this.model.get('userClientMicropayContractAddress'));
-      var registerHit = (contract) => {
+      var registerHit = function(contract) {
         contract.registerHit()
-          .then(() => { self.model.get('callback')(); })
-          .catch((err) => { console.log("PAYMENT FAILED"); });
+          .then(function() { return self.model.get('callback')(); })
+          .catch(function(err) { console.log("PAYMENT FAILED: " + err); });
       };
-      var getUserContractAndHit = (errFn) => {
+      var getUserContractAndHit = function(errFn) {
         userClientMicropayContract.getContract.call()
-          .then((contractAddr) => {
-            registerHit(UserClient.at(contractAddr));
+          .then(function(contractAddr) {
+            return registerHit(UserClient.at(contractAddr));
           })
           .catch(errFn);
       };
-      getUserContractAndHit((err) => {
+      getUserContractAndHit(function(err) {
         // If no contract, register first then retry
         userClientMicropayContract.registerUser()
-          .then(() => { getUserContractAndHit((err) => { console.log("Unable to register"); })});
+          .then(function() {
+            getUserContractAndHit(function(err) { console.log("Unable to register"); });
+          });
       })
     },
     render: function() {
