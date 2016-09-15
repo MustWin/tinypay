@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/urfave/cli"
 
 	"oracles"
@@ -38,9 +40,18 @@ func Main(c *cli.Context) error {
 		From: "0x1",
 		To:   "latest",
 	}
+	l := common.HashLength
 	evtWatcher := oracles.NewEventWatcher(rpcurl, interval*time.Second, r, "")
 	for evt := range evtWatcher.Ch {
 		fmt.Printf("new event %+v\n", evt)
+		d := common.FromHex(evt.Data)
+		h := [][]byte{}
+		for i := 0; i < len(d)/l; i++ {
+			s := d[i*l : i*l+l]
+			h = append(h, s)
+			s = bytes.Trim(s, "\x00")
+			fmt.Printf("\t\tIndex %d: string %q\n", i, string(s))
+		}
 	}
 	return evtWatcher.Wait()
 }
