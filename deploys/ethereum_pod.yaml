@@ -15,6 +15,7 @@ spec:
         - "--cache=768"
         - "--rpc"
         - "--rpcaddr=0.0.0.0"
+        - "--testnet"
       env:
       ports:
         - containerPort: 8545
