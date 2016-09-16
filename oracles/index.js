@@ -28,7 +28,7 @@ var opts = {
   check_interval: (program.interval || 10) * 1000,
 };
 
-console.log('Connecting to rcp host: ' + program.rpchost + ':' + program.rpcport);
+console.log('Connecting to rpc host: ' + program.rpchost + ':' + program.rpcport);
 
 var client = rpc.Client.$create(opts.rpc_port, opts.rpc_host);
 

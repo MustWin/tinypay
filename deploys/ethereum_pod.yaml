@@ -13,6 +13,8 @@ spec:
       name: ethereum
       args:
         - "--cache=768"
+        - "--rpc"
+        - "--rpcaddr=0.0.0.0"
       env:
       ports:
         - containerPort: 8545
