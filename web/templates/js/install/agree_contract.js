@@ -34,7 +34,7 @@ MP.Add(function() {
         this._handleFormEvt(evt, function(form) {
           self.model.set({domain: form.domain});
           // TODO: Domain validation
-          self.micropayContract.signUp(form.domain, form.amount)
+          self.micropayContract.signUp(form.domain, form.amount, {from: web3.eth.coinbase})
             .then(function() { /* This triggers an event on success that we're listening for */})
             .catch(function(err) { self._showError(evt, "signup-form", err); });
         });

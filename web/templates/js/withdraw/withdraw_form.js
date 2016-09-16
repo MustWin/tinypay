@@ -43,7 +43,7 @@ MP.Add(function() {
       this._disableForm(evt);
       this._handleFormEvt(evt, function(form) {
         try {
-          self.contract.withdraw(form.withdraw_amount)
+          self.contract.withdraw(form.withdraw_amount, {from: web3.eth.coinbase})
             .then(function() {
               self._showStep(3);
             })
