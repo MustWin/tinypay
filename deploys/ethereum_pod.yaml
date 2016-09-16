@@ -12,10 +12,10 @@ spec:
       image: ethereum/client-go:alpine
       name: ethereum
       args:
+        - "--testnet"
         - "--cache=768"
         - "--rpc"
         - "--rpcaddr=0.0.0.0"
-        - "--testnet"
       env:
       ports:
         - containerPort: 8545
