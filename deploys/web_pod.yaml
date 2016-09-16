@@ -17,6 +17,7 @@ spec:
         - containerPort: 80
           name: web
       volumeMounts:
+      imagePullPolicy: Always
   imagePullSecrets:
       - name: jeffregistrykey
   volumes:
