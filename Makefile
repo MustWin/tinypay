@@ -17,9 +17,5 @@ web/output: $(call rwildcard, web, *.json *.mustache *.markdown *.js)
 	@cd web; \
 		punch g
 
-orcl: $(call rwildcard, oracles, *.go)
-	@cd oracles; \
-		make
-
 
 .PHONY: all clean orcl
