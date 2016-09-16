@@ -37,25 +37,28 @@ function confirmClient(sender, domain, clientAddr, price) {
     ABI.methodID('confirmClient', ['string', 'address', 'uint256']).toString('hex') +
     ABI.rawEncode(['string', 'address', 'uint256'], [domain, clientAddr, price]).toString('hex');
 
-  // TODO: not sure about the address parameters here... need to double
-  // and triple check sender, receiver, contract, etc. addresses.
-  client.call('eth_sendTransaction', [{
+  var opts = {
     from: sender,
-    to: clientAddr,
     data: data
-  }], function (err, result) {
+  };
+
+  client.call('eth_sendTransaction', [opts], function (err, result) {
     if (err) {
       console.error('problem confirming client: ', err);
       return;
     }
     console.log('success confirming client: ', result);
   });
+
   // TODO: make this synchronous maybe so we can return a meaningful
-  // value, or else rethink the signalling of success.
+  // value, or better yet rethink the signalling of success.
   return true;
 }
 
 function verifyDomain(domain, hash) {
+  if ((!domain) || (!hash)) {
+    return false
+  }
   // TODO: lookup domain TXT record and verify hash
   return true;
 }
@@ -73,12 +76,9 @@ function handleClientCreated(ev) {
   var x_ctAddr = '0x' + data[4].toString('hex');
 
   console.log('ClientCreated: ' + x_domain);
-  console.log('     confHash: ' + x_cfHash);
-  console.log('       client: ' + x_client);
-  console.log(' contractAddr: ' + x_ctAddr);
 
   if (verifyDomain(x_domain, x_cfHash)) {
-    if (confirmClient(ev.address, x_domain, x_ctAddr, x_priceh)) {
+    if (confirmClient(ev.address, x_domain, x_client, x_priceh)) {
       console.log('Client Confirmed!');
     }
   }
@@ -90,9 +90,13 @@ function handleClientCreated(ev) {
 function pollForEvents(filterId) {
   client.call('eth_getFilterChanges', [filterId], function (err, result) {
     if (err) {
-      console.error('error: ' + err);
+      console.error('error: ', err);
+      return;
     }
-    console.log(result.length + ' results');
+    if (!result) {
+      return;
+    }
+    console.log(result.length + ' new transactions');
     for (var i in result) {
       var ev = result[i];
       if (ev.topics[0] !== ('0x' + ABI.eventID('ClientCreated', ['string', 'address', 'uint256', 'bytes32', 'address']).toString('hex'))) {
