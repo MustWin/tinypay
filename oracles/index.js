@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var path = require('path');
+var fs = require('fs');
 var pkg = require(path.join(__dirname, 'package.json'));
 var program = require('commander');
 
@@ -12,20 +13,26 @@ program
   .option('--rpchost <host>', 'RPC host to connect to')
   .option('--rpcport <port>', 'RPC port to connect to')
   .option('--interval <seconds>', 'polling frequency')
+  .option('--secrets <directory>', 'directory containing secrets')
   .parse(process.argv);
 
 if (program.rpchost === undefined) {
   program.rpchost = 'localhost';
 }
-
 if (program.rpcport === undefined) {
   program.rpcport = 8545;
 }
+if (program.secrets === undefined) {
+  program.secrets = '/var/local/secrets'
+}
+var secretsPath = path.join(program.secrets, 'password.txt');
 
 var opts = {
   rpc_port: program.rpcport,
   rpc_host: program.rpchost,
   check_interval: (program.interval || 10) * 1000,
+  secrets: secretsPath,
+  wallet: new Buffer(fs.readFileSync(secretsPath, 'utf8'), 'base64').toString('utf8')
 };
 
 console.log('Connecting to rpc host: ' + program.rpchost + ':' + program.rpcport);
@@ -33,21 +40,28 @@ console.log('Connecting to rpc host: ' + program.rpchost + ':' + program.rpcport
 var client = rpc.Client.$create(opts.rpc_port, opts.rpc_host);
 
 function confirmClient(sender, domain, clientAddr, price) {
-  var data =
-    ABI.methodID('confirmClient', ['string', 'address', 'uint256']).toString('hex') +
-    ABI.rawEncode(['string', 'address', 'uint256'], [domain, clientAddr, price]).toString('hex');
-
-  var opts = {
-    from: sender,
-    data: data
-  };
-
-  client.call('eth_sendTransaction', [opts], function (err, result) {
+  client.call('personal_unlockAccount', [sender, opts.wallet], function (err, result) {
     if (err) {
-      console.error('problem confirming client: ', err);
+      console.error('problem unlocking account: ', err);
       return;
     }
-    console.log('success confirming client: ', result);
+
+    var data =
+      ABI.methodID('confirmClient', ['string', 'address', 'uint256']).toString('hex') +
+      ABI.rawEncode(['string', 'address', 'uint256'], [domain, clientAddr, price]).toString('hex');
+
+    var xaOpts = [{
+      from: sender,
+      data: data
+    }];
+
+    client.call('eth_sendTransaction', xaOpts, function (err, result) {
+      if (err) {
+        console.error('problem confirming client: ', err);
+        return;
+      }
+      console.log('success confirming client: ', result);
+    });
   });
 
   // TODO: make this synchronous maybe so we can return a meaningful

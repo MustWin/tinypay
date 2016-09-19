@@ -15,10 +15,13 @@ spec:
       env:
         - name: ETHEREUM_SERVICE_HOST
           value: 10.3.252.188
-      ports:
-        - containerPort: 80
-          name: oracle
       volumeMounts:
+        - name: secrets
+          mountPath: /var/local/secrets
+          readOnly: true
   imagePullSecrets:
       - name: jeffregistrykey
   volumes:
+    - name: secrets
+      secret:
+        secretName: wallet-pass
