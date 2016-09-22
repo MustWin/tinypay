@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 
-var path = require('path');
-var fs = require('fs');
-var pkg = require(path.join(__dirname, 'package.json'));
+var Web3 = require('web3');
+var web3 = new Web3();
+
 var program = require('commander');
 
-var rpc = require('json-rpc2');
-var ABI = require('ethereumjs-abi');
+var path = require('path');
+var fs = require('fs');
+
+var pkg = require(path.join(__dirname, 'package.json'));
+var contracts = require(path.join(__dirname, 'gen_contracts.json'));
 
 program
   .version(pkg.version)
+  .option('--secrets <directory>', 'directory containing secrets')
   .option('--rpchost <host>', 'RPC host to connect to')
   .option('--rpcport <port>', 'RPC port to connect to')
   .option('--interval <seconds>', 'polling frequency')
-  .option('--secrets <directory>', 'directory containing secrets')
   .parse(process.argv);
 
 if (program.rpchost === undefined) {
@@ -25,115 +28,86 @@ if (program.rpcport === undefined) {
 if (program.secrets === undefined) {
   program.secrets = '/var/local/secrets'
 }
-var secretsPath = path.join(program.secrets, 'password.txt');
+
+var secretsFiles = [
+  path.join(program.secrets, 'password.txt'),
+  path.join(program.secrets, 'domainmicropay.txt')
+];
+
+secretsFiles.forEach(function (file) {
+  fs.access(file, fs.F_OK, function (err) {
+    if (err) {
+      console.error('CANNOT READ: ', file, err);
+      process.exit();
+    }
+  });
+});
 
 var opts = {
-  rpc_port: program.rpcport,
+  wallet_password: new Buffer(fs.readFileSync(secretsFiles[0], 'utf8'), 'base64').toString('utf8'),
+  contract_address: new Buffer(fs.readFileSync(secretsFiles[1], 'utf8'), 'base64').toString('utf8'),
   rpc_host: program.rpchost,
-  check_interval: (program.interval || 10) * 1000,
-  secrets: secretsPath,
-  wallet: new Buffer(fs.readFileSync(secretsPath, 'utf8'), 'base64').toString('utf8')
+  rpc_port: program.rpcport,
+  check_interval: (program.interval || 10) * 1000
 };
 
-console.log('Connecting to rpc host: ' + program.rpchost + ':' + program.rpcport);
+// Connect
+console.log('Connecting to rpc host: ' + opts.rpc_host + ':' + opts.rpc_port);
+web3.setProvider(new web3.providers.HttpProvider('http://' + opts.rpc_host + ':' + opts.rpc_port));
 
-var client = rpc.Client.$create(opts.rpc_port, opts.rpc_host);
+if (!web3.isConnected()) {
+  console.error('Not connected');
+  process.exit();
+}
 
-function confirmClient(sender, domain, clientAddr, price) {
-  client.call('personal_unlockAccount', [sender, opts.wallet], function (err, result) {
-    if (err) {
-      console.error('problem unlocking account: ', err);
-      return;
-    }
+var cb = web3.eth.coinbase;
+console.log('Coinbase: ', cb);
 
-    var data =
-      ABI.methodID('confirmClient', ['string', 'address', 'uint256']).toString('hex') +
-      ABI.rawEncode(['string', 'address', 'uint256'], [domain, clientAddr, price]).toString('hex');
+// Unlock
+if (!web3.personal.unlockAccount(cb, opts.wallet_password)) {
+  console.error('Could not unlock');
+  process.exit();
+}
 
-    var xaOpts = [{
-      from: sender,
-      data: data
-    }];
-
-    client.call('eth_sendTransaction', xaOpts, function (err, result) {
-      if (err) {
-        console.error('problem confirming client: ', err);
-        return;
-      }
-      console.log('success confirming client: ', result);
-    });
+function runLoop(o) {
+  var filter = web3.eth.filter({
+    address: o.contract_address
   });
-
-  // TODO: make this synchronous maybe so we can return a meaningful
-  // value, or better yet rethink the signalling of success.
-  return true;
-}
-
-function verifyDomain(domain, hash) {
-  if ((!domain) || (!hash)) {
-    return false
-  }
-  // TODO: lookup domain TXT record and verify hash
-  return true;
-}
-
-//
-// ClientCreated event handler
-//
-function handleClientCreated(ev) {
-  var data = ABI.rawDecode(['string', 'address', 'uint256', 'bytes32', 'address'], new Buffer(ev.data.slice(2), 'hex'));
-
-  var x_domain = data[0];
-  var x_client = '0x' + data[1].toString('hex');
-  var x_priceh = data[2];
-  var x_cfHash = data[3].toString('hex');
-  var x_ctAddr = '0x' + data[4].toString('hex');
-
-  console.log('ClientCreated: ' + x_domain);
-
-  if (verifyDomain(x_domain, x_cfHash)) {
-    if (confirmClient(ev.address, x_domain, x_client, x_priceh)) {
-      console.log('Client Confirmed!');
-    }
-  }
-}
-
-//
-// polling loop function
-//
-function pollForEvents(filterId) {
-  client.call('eth_getFilterChanges', [filterId], function (err, result) {
+  filter.watch(function (err, results) {
     if (err) {
-      console.error('error: ', err);
-      return;
+      console.log('WATCH ERROR: ', err);
+      process.exit();
     }
-    if (!result) {
-      return;
+    console.debug(results);
+  });
+}
+
+if (!opts.contract_address) {
+  var dmC = web3.eth.contract(JSON.parse(contracts.DomainMicropay.abi));
+  var x = {
+    from: cb,
+    data: contracts.DomainMicropay.bin,
+    gas: 1000000
+  };
+  dmC.new(x, function (err, resp) {
+    if (err) {
+      console.error('Loading contract', err);
+      process.exit();
     }
-    console.log(result.length + ' new transactions');
-    for (var i in result) {
-      var ev = result[i];
-      if (ev.topics[0] !== ('0x' + ABI.eventID('ClientCreated', ['string', 'address', 'uint256', 'bytes32', 'address']).toString('hex'))) {
-        continue;
-      }
-      handleClientCreated(ev);
+    var addr = resp.address;
+    if (!addr) {
+      console.log('Pending tx: ', resp.transactionHash);
+    } else {
+      console.log('Deployed Address: ', addr);
+      opts.contract_address = addr;
+      runLoop(opts);
     }
   });
+} else {
+  runLoop(opts);
 }
 
 var intCounter = 0;
-var eventId;
-
-//
-// Set up filter and initiate loop
-//
-client.call('eth_newFilter', [{}], function (err, result) {
-  if (err) {
-    throw err;
-  }
-  eventId = result;
-  setInterval(pollForEvents, opts.check_interval, result);
-});
 
 //
 // Handle interrupt signals
@@ -141,18 +115,7 @@ client.call('eth_newFilter', [{}], function (err, result) {
 process.on('SIGINT', function () {
   intCounter++;
   console.log('Interrupt ' + (3 - intCounter) + ' more times to forcefully quit.');
-  if (intCounter > 3) {
+  if (intCounter > 2) {
     process.exit();
-  }
-  if ((intCounter === 1) && (eventId !== undefined)) {
-    console.log('Cleaning up. Removing filter.');
-    client.call('eth_uninstallFilter', [{
-      eventId
-    }], function (err, result) {
-      if (err) {
-        console.error('error on cleanup: ' + err);
-      }
-      process.exit();
-    });
   }
 });

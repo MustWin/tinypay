@@ -26,6 +26,18 @@ cat eth/contracts/* | \
 echo "Done."
 
 #
+# Generate JSON files from .sol files
+#
+
+echo "Generate JSON bindings..."
+cat eth/contracts/* | \
+  sed -e 's/_$/_;/g' | \
+  sed -e 's/import ".*";//g' | \
+  sed -e '1s/^/pragma solidity ^0.4.0;/' | \
+  solc --combined-json abi,bin 2> /dev/null | jq .contracts  >| oracles/gen_contracts.json
+echo "Done."
+
+#
 # Generate Go files from .abi files
 #
 
@@ -42,3 +54,4 @@ do
   abigen --out ${filename} --pkg oracles --type ${typename} --abi $abifile --bin ${binfile}
 done
 echo "Done."
+
