@@ -5697,9 +5697,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060405260358060106000396000f36503063fc68da550606060405260e060020a600035046396e4ee3d81146024575b6007565b602435600435026060908152602090f3",
     "events": {},
-    "updated_at": 1474013996311,
+    "updated_at": 1474593045995,
     "links": {},
-    "address": "0xe94863a75f26d5c6f42d32a4c5d88f9bfff551a9"
+    "address": "0x0eb183f571f467fee7fe696bcc6f5cf3366abef8"
   }
 };
 
@@ -6366,9 +6366,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1474013996317,
+    "updated_at": 1474593045991,
     "links": {},
-    "address": "0xda939733a2e8a1de30117525af09459e4c26e963"
+    "address": "0x042f7486c6e9e35bc151ae24b77d57bff34c3dfa"
   }
 };
 
@@ -6904,8 +6904,8 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x606060405260008054600160a060020a03191633179055610130806100246000396000f3606060405260e060020a60003504630900f010811461003c578063445df0ac146100c05780638da5cb5b146100c9578063fdacd576146100db575b005b61003a60043560008054600160a060020a039081163390911614156100bc57604080516001547ffdacd576000000000000000000000000000000000000000000000000000000008252600482015290518392600160a060020a0384169263fdacd5769260248281019392829003018183876161da5a03f115610002575050505b5050565b61010160015481565b610113600054600160a060020a031681565b61003a60043560005433600160a060020a03908116911614156100fe5760018190555b50565b60408051918252519081900360200190f35b60408051600160a060020a03929092168252519081900360200190f3",
     "events": {},
-    "updated_at": 1474013996326,
-    "address": "0x768937fbd010c6e783d9cfc86ac2583f6eb4321a",
+    "updated_at": 1474593045999,
+    "address": "0x390f6f8c7d8b6b7914202c1176db161b1dfbd44c",
     "links": {}
   }
 };
@@ -7467,9 +7467,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1474013996323,
+    "updated_at": 1474593045997,
     "links": {},
-    "address": "0xa559a00b8641450c30f56e890a00ede9d9ac9740"
+    "address": "0xe305735ae62787eb9af266f9f6b70793c5e6d7bf"
   }
 };
 
@@ -29102,7 +29102,15 @@ utils.intFromLE = intFromLE;
 module.exports={
   "_args": [
     [
-      "elliptic@^6.2.3",
+      {
+        "raw": "elliptic@^6.2.3",
+        "scope": null,
+        "escapedName": "elliptic",
+        "name": "elliptic",
+        "rawSpec": "^6.2.3",
+        "spec": ">=6.2.3 <7.0.0",
+        "type": "range"
+      },
       "/usr/local/lib/node_modules/truffle/node_modules/secp256k1"
     ]
   ],
@@ -29117,16 +29125,17 @@ module.exports={
     "tmp": "tmp/elliptic-6.3.1.tgz_1465921413402_0.5202967382501811"
   },
   "_npmUser": {
-    "email": "fedor@indutny.com",
-    "name": "indutny"
+    "name": "indutny",
+    "email": "fedor@indutny.com"
   },
   "_npmVersion": "3.8.6",
   "_phantomChildren": {},
   "_requested": {
-    "name": "elliptic",
     "raw": "elliptic@^6.2.3",
-    "rawSpec": "^6.2.3",
     "scope": null,
+    "escapedName": "elliptic",
+    "name": "elliptic",
+    "rawSpec": "^6.2.3",
     "spec": ">=6.2.3 <7.0.0",
     "type": "range"
   },
@@ -29141,8 +29150,8 @@ module.exports={
   "_spec": "elliptic@^6.2.3",
   "_where": "/usr/local/lib/node_modules/truffle/node_modules/secp256k1",
   "author": {
-    "email": "fedor@indutny.com",
-    "name": "Fedor Indutny"
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
   },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
@@ -29180,10 +29189,10 @@ module.exports={
   "gitHead": "c53f5cf3d832c0073eb4a4ed423a464cbce68f3e",
   "homepage": "https://github.com/indutny/elliptic",
   "keywords": [
-    "Cryptography",
     "EC",
     "Elliptic",
-    "curve"
+    "curve",
+    "Cryptography"
   ],
   "license": "MIT",
   "main": "lib/elliptic.js",
@@ -44502,12 +44511,12 @@ module.exports = transfer;
 
 },{"crypto":58}],223:[function(require,module,exports){
 module.exports = {
-  "ConvertLib": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/ConvertLib.sol.js"),
-  "DomainMicropay": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/DomainMicropay.sol.js"),
-  "UserClientMicropay": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/UserClientMicropay.sol.js"),
-  "Migrations": require("/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/Migrations.sol.js"),
+  "ConvertLib": require("/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/ConvertLib.sol.js"),
+  "DomainMicropay": require("/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/DomainMicropay.sol.js"),
+  "Migrations": require("/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/Migrations.sol.js"),
+  "UserClientMicropay": require("/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/UserClientMicropay.sol.js"),
 };
-},{"/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/ConvertLib.sol.js":1,"/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/DomainMicropay.sol.js":2,"/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/Migrations.sol.js":3,"/Users/Mike/code/GOPATH/src/github.com/MustWin/micropay/eth/build/contracts/UserClientMicropay.sol.js":4}]},{},[223])(223)
+},{"/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/ConvertLib.sol.js":1,"/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/DomainMicropay.sol.js":2,"/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/Migrations.sol.js":3,"/Users/weldon/src/github.com/MustWin/tinypay/eth/build/contracts/UserClientMicropay.sol.js":4}]},{},[223])(223)
 });
 
 //// TRUFFLE BOOTSTRAP                                          
@@ -44540,7 +44549,7 @@ window.addEventListener('load', function() {
 
                                                                 
 
-  [ConvertLib,Migrations,DomainMicropay,UserClientMicropay].forEach(function(contract) {         
+  [ConvertLib,DomainMicropay,Migrations,UserClientMicropay].forEach(function(contract) {         
 
     contract.setProvider(window.web3.currentProvider);          
 
