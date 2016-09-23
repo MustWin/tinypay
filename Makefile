@@ -10,7 +10,7 @@ eth/build: $(call rwildcard, eth, *.sol *.js)
 	@cd eth; \
 		truffle build; \
 		cp build/app.js ../web/templates/js/contracts.js ; \
-		cp build/app.js ../oracles/contracts.js
+		cp build/contracts/DomainMicropay.sol.js ../oracles/DomainMicropay.sol.js
 
 web/output: $(call rwildcard, web, *.json *.mustache *.markdown *.js)
 	@cd web; \

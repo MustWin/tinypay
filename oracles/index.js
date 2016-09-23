@@ -9,14 +9,13 @@ var path = require('path');
 var fs = require('fs');
 
 var pkg = require(path.join(__dirname, 'package.json'));
-var contracts = require(path.join(__dirname, 'gen_contracts.json'));
+var DomainMicropay = require(path.join(__dirname, './DomainMicropay.sol.js'));
 
 program
   .version(pkg.version)
   .option('--secrets <directory>', 'directory containing secrets')
   .option('--rpchost <host>', 'RPC host to connect to')
   .option('--rpcport <port>', 'RPC port to connect to')
-  .option('--interval <seconds>', 'polling frequency')
   .parse(process.argv);
 
 if (program.rpchost === undefined) {
@@ -31,7 +30,6 @@ if (program.secrets === undefined) {
 
 var secretsFiles = [
   path.join(program.secrets, 'password.txt'),
-  path.join(program.secrets, 'domainmicropay.txt')
 ];
 
 secretsFiles.forEach(function (file) {
@@ -45,67 +43,82 @@ secretsFiles.forEach(function (file) {
 
 var opts = {
   wallet_password: new Buffer(fs.readFileSync(secretsFiles[0], 'utf8'), 'base64').toString('utf8'),
-  contract_address: new Buffer(fs.readFileSync(secretsFiles[1], 'utf8'), 'base64').toString('utf8'),
   rpc_host: program.rpchost,
-  rpc_port: program.rpcport,
-  check_interval: (program.interval || 10) * 1000
+  rpc_port: program.rpcport
 };
 
 // Connect
-console.log('Connecting to rpc host: ' + opts.rpc_host + ':' + opts.rpc_port);
-web3.setProvider(new web3.providers.HttpProvider('http://' + opts.rpc_host + ':' + opts.rpc_port));
-
+var provider = new web3.providers.HttpProvider('http://' + opts.rpc_host + ':' + opts.rpc_port);
+web3.setProvider(provider);
 if (!web3.isConnected()) {
-  console.error('Not connected');
+  console.log('Not Connected');
   process.exit();
 }
+DomainMicropay.setProvider(web3.currentProvider);
 
-var cb = web3.eth.coinbase;
-console.log('Coinbase: ', cb);
+console.log('Begin watching for ClientCreated events');
 
-// Unlock
-if (!web3.personal.unlockAccount(cb, opts.wallet_password)) {
-  console.error('Could not unlock');
-  process.exit();
-}
+// Initialize to point to deployed contract
+var contract = DomainMicropay.deployed();
 
-function runLoop(o) {
-  var filter = web3.eth.filter({
-    address: o.contract_address
-  });
-  filter.watch(function (err, results) {
-    if (err) {
-      console.log('WATCH ERROR: ', err);
-      process.exit();
-    }
-    console.debug(results);
-  });
-}
+// helper functions
+var clientDomainIsVerified = function (domain, confirmationHash) {
+  //TODO: implement domain lookup.
+  return true;
+};
 
-if (!opts.contract_address) {
-  var dmC = web3.eth.contract(JSON.parse(contracts.DomainMicropay.abi));
-  var x = {
-    from: cb,
-    data: contracts.DomainMicropay.bin,
-    gas: 1000000
-  };
-  dmC.new(x, function (err, resp) {
-    if (err) {
-      console.error('Loading contract', err);
-      process.exit();
-    }
-    var addr = resp.address;
-    if (!addr) {
-      console.log('Pending tx: ', resp.transactionHash);
+var doDomainVerification = function (domain, client, price, cfHash) {
+  return function () {
+    if (clientDomainIsVerified(domain, cfHash)) {
+      console.log('sending confirmation: ', domain);
+      if (web3.personal.unlockAccount(web3.eth.coinbase, opts.wallet_password)) {
+        contract.confirmClient(domain, client, price, {
+          from: web3.eth.coinbase
+        }).then(function (res) {
+          console.log('confirmClient transaction successfully sent: ', domain, res);
+        }, function (err) {
+          console.error('Error sending confirmClient transaction: ', domain, err);
+        });
+      }
     } else {
-      console.log('Deployed Address: ', addr);
-      opts.contract_address = addr;
-      runLoop(opts);
+      console.log('cannot confirm client yet: ', domain);
     }
-  });
-} else {
-  runLoop(opts);
-}
+  }
+};
+
+// First watch for confirmation events
+var ClientConfirmed = contract.ClientConfirmed({}, {
+  fromBlock: '0',
+  toBlock: 'latest'
+}, function (error, result) {
+  if (error) {
+    console.error('ERROR: ', error);
+  } else {
+    console.log('Client Confirmed: ', result.args.domain);
+  }
+});
+
+// Then watch for created events and perform the 'oracle'
+var ClientCreated = contract.ClientCreated({}, {
+  fromBlock: '0',
+  toBlock: 'latest'
+}, function (error, result) {
+  if (error) {
+    console.error('ERROR: ', error);
+  } else {
+    var domain = result.args.domain;
+    var client = result.args.client;
+    var price = result.args._pricePerHit;
+    var cfHash = result.args.confirmationHash;
+    contract.getPaymentContractForDomain.call(domain).then(function (addr) {
+      if (addr === '0x') {
+        doDomainVerification(domain, client, price, cfHash)();
+      } else {
+        console.log('client already confirmed: ', domain, addr);
+      }
+    }).catch(doDomainVerification(domain, client, price, cfHash));
+  }
+});
 
 var intCounter = 0;
 
