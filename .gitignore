@@ -2,3 +2,5 @@ web/output
 eth/build
 .DS_Store
 .idea/
+*.iml
+npm-debug.log

@@ -14,7 +14,7 @@
   "author": "John Weldon <johnweldon4@gmail.com>",
   "private": true,
   "bin": {
-    "oracles": "./index.js"
+    "oracles": "./scripts/run.sh"
   },
   "dependencies": {
     "commander": "^2.9.0",

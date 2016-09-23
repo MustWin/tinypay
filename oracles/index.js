@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+'use strict';
 
 var Web3 = require('web3');
 var web3 = new Web3();
@@ -25,11 +25,11 @@ if (program.rpcport === undefined) {
   program.rpcport = 8545;
 }
 if (program.secrets === undefined) {
-  program.secrets = '/var/local/secrets'
+  program.secrets = '/var/local/secrets';
 }
 
 var secretsFiles = [
-  path.join(program.secrets, 'password.txt'),
+  path.join(program.secrets, 'password.txt')
 ];
 
 secretsFiles.forEach(function (file) {
@@ -62,32 +62,50 @@ console.log('Begin watching for ClientCreated events');
 var contract = DomainMicropay.deployed();
 
 // helper functions
-var clientDomainIsVerified = function (domain, confirmationHash) {
-  //TODO: implement domain lookup.
-  return true;
-};
-
-var doDomainVerification = function (domain, client, price, cfHash) {
-  return function () {
-    if (clientDomainIsVerified(domain, cfHash)) {
-      console.log('sending confirmation: ', domain);
-      if (web3.personal.unlockAccount(web3.eth.coinbase, opts.wallet_password)) {
-        contract.confirmClient(domain, client, price, {
-          from: web3.eth.coinbase
-        }).then(function (res) {
-          console.log('confirmClient transaction successfully sent: ', domain, res);
-        }, function (err) {
-          console.error('Error sending confirmClient transaction: ', domain, err);
-        });
-      }
-    } else {
-      console.log('cannot confirm client yet: ', domain);
-    }
+var confirmClient = function (args) {
+  console.log('sending confirmation: ', args.domain);
+  if (web3.personal.unlockAccount(web3.eth.coinbase, opts.wallet_password)) {
+    contract.confirmClient(args.domain, args.client, args._pricePerHit, {
+      from: web3.eth.coinbase
+    }).then(function (res) {
+      console.log('"confirmClient" transaction successfully sent: ', args.domain, res);
+    }, function (err) {
+      console.error('Error sending "confirmClient" transaction: ', args.domain, err);
+    });
   }
 };
 
+var quitChecking = function (args) {
+  console.error('updated TXT record not found before timeout; cancelling check: ', args.domain);
+};
+
+var clientDomainHasTXTRecord = function (domain, key) {
+  return !(!domain || !key);
+
+};
+
+var verifyClientDomain = function (args, onSuccess, onTimeout, expiration) {
+  if (clientDomainHasTXTRecord(args.domain, args.confirmationHash)) {
+    (onSuccess || confirmClient)(args);
+    return;
+  }
+  if (!expiration) {
+    // set expiration to one hour from now by default
+    expiration = new Date(new Date().getTime() + 60 * 60 * 1000);
+  }
+  if (expiration < new Date()) {
+    (onTimeout || quitChecking())(args);
+    return;
+  }
+
+  // keep checking every 30 seconds
+  setTimeout(function () {
+    verifyClientDomain(args, onSuccess, onTimeout, expiration)
+  }, 30 * 1000);
+};
+
 // First watch for confirmation events
-var ClientConfirmed = contract.ClientConfirmed({}, {
+contract.ClientConfirmed({}, {
   fromBlock: '0',
   toBlock: 'latest'
 }, function (error, result) {
@@ -99,24 +117,20 @@ var ClientConfirmed = contract.ClientConfirmed({}, {
 });
 
 // Then watch for created events and perform the 'oracle'
-var ClientCreated = contract.ClientCreated({}, {
+contract.ClientCreated({}, {
   fromBlock: '0',
   toBlock: 'latest'
 }, function (error, result) {
   if (error) {
     console.error('ERROR: ', error);
   } else {
-    var domain = result.args.domain;
-    var client = result.args.client;
-    var price = result.args._pricePerHit;
-    var cfHash = result.args.confirmationHash;
-    contract.getPaymentContractForDomain.call(domain).then(function (addr) {
+    contract.getPaymentContractForDomain.call(result.args.domain).then(function (addr) {
       if (addr === '0x') {
-        doDomainVerification(domain, client, price, cfHash)();
+        verifyClientDomain(result.args);
       } else {
-        console.log('client already confirmed: ', domain, addr);
+        console.log('client already confirmed: ', result.args.domain, addr);
       }
-    }).catch(doDomainVerification(domain, client, price, cfHash));
+    });
   }
 });
 
@@ -126,7 +140,7 @@ var intCounter = 0;
 // Handle interrupt signals
 //
 process.on('SIGINT', function () {
-  intCounter++;
+  intCounter += 1;
   console.log('Interrupt ' + (3 - intCounter) + ' more times to forcefully quit.');
   if (intCounter > 2) {
     process.exit();

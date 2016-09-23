@@ -1,0 +1,17 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "no-console": "off"
+  }
+}
