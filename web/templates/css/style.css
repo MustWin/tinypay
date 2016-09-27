@@ -82,7 +82,7 @@ h1.header {
   background-color: #3e5673 !important;
 }
 
-.btn-large.orange {
+.btn-large.orange, .btn {
   background-color: #f66 !important;
 
 }
@@ -96,4 +96,15 @@ h1.header {
 }
 .light {
   text-align: center;  
+}
+.tinypay-btn {
+  background-color: #f66 !important;
+  padding: 8px 10px 8px 8px;
+  line-height: 20px;  
+}
+.tinypay-btn i.left {
+  margin-right: 6px;
+}
+h3 {
+  margin-top: 26px;
 }
