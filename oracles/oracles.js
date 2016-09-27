@@ -6,6 +6,8 @@
     var web3 = new Web3();
 
     var Promise = require('promise');
+    const dns = require('dns');
+    var resolveTxt = Promise.denodeify(dns.resolveTxt);
 
     var moment = require('moment');
     var path = require('path');
@@ -38,8 +40,23 @@
       }
     }
 
+    function domainIsNotSetUp(retryUntil, eventData) {
+      return function (err) {
+        if (retryUntil.isBefore(moment())) {
+          console.error('giving up on verification of client domain "' + eventData.args.domain + '"', err);
+          return;
+        }
+
+        console.log('client domain "' + eventData.args.domain + '" not yet set up.  trying again ' + retryUntil.fromNow());
+
+        setTimeout(function () {
+          checkDomain(eventData, retryUntil);
+        }, 37 * 1000);
+      }
+    }
+
     function domainIsSetUp(eventData) {
-      return !!(eventData.args.domain && eventData.args.confirmationHash);
+      return function (addresses) {}
     }
 
     function notifyBlockChain(eventData) {
@@ -55,22 +72,61 @@
       }
     }
 
+    function checkRecord(records) {
+      while (records.length > 0) {
+        var record = records.shift() || '';
+        var s = record.split('=', 2);
+        if (s[0] === 'tinypay-site-verification') {
+          return Promise.resolve(s[1]);
+        }
+      }
+      return Promise.reject('TXT record not found');
+    }
+
+    function verifyHash(expect) {
+      return function (got) {
+        if (expect === got) {
+          return Promise.resolve(got);
+        }
+        return Promise.reject('incorrect TXT value');
+      };
+    }
+
+    function notifySuccess(eventData) {
+      return function (hash) {
+        if (web3.personal.unlockAccount(web3.eth.coinbase, password)) {
+          return Promise.resolve(contract.confirmClient(
+            eventData.args.domain,
+            eventData.args.client,
+            eventData.args._pricePerHit, txnOpts()
+          ).then(
+            logFn('\nsent confirmClient transaction for "' + eventData.args.domain + '"'),
+            errFn('\nerror sending confirmClient transaction for "' + eventData.args.domain + '"')
+          ));
+        }
+        return Promise.reject('unable to unlock account');
+      };
+    }
+
+    function retryLaterMaybe(eventData, until) {
+      return function (err) {
+        if (until.isBefore(moment())) {
+          console.log('giving up verification; domain: "' + eventData.args.domain + '". timed out and: ', err);
+          return;
+        }
+        console.log('still waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow());
+        setTimeout(function () {
+          checkDomain(eventData, until);
+        }, 37 * 1000);
+      };
+    }
+
     function checkDomain(eventData, until) {
-      if (domainIsSetUp(eventData)) {
-        notifyBlockChain(eventData);
-        return;
-      }
-
-      if (until.isBefore(moment())) {
-        console.error('giving up on verification of client domain "' + eventData.args.domain + '"');
-        return;
-      }
-
-      console.log('client domain "' + eventData.args.domain + '" not yet set up.  trying again ' + until.fromNow());
-
-      setTimeout(function () {
-        checkDomain(eventData, until);
-      }, 37 * 1000);
+      resolveTxt(eventData.args.domain)
+        .then(checkRecord)
+        .then(verifyHash(eventData.args.confirmationHash))
+        .then(notifySuccess(eventData))
+        .catch(retryLaterMaybe(eventData, until));
     }
 
     function beginDomainVerification(eventData) {
@@ -78,7 +134,7 @@
         if (blockAddress.length < 10) {
           // blockAddress '0x' or something shorter than a full address
           // indicates that the domain has not yet been verified.
-          checkDomain(eventData, moment().add(60, 'seconds'));
+          checkDomain(eventData, moment().add(60, 'minutes'));
         }
         // else already confirmed
       }
