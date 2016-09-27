@@ -11,9 +11,14 @@
 
 ## Dev environment
 
-1. Install [Metamask](https://metamask.io/)
+1. Install [Metamask](https://metamask.io/) Browser Plugin
+
 2. Install [Truffle](http://truffle.readthedocs.io/en/latest/getting_started/installation/)
-3. Install [testrpc](https://github.com/ethereumjs/testrpc) `npm install -g ethereumjs-testrpc`
+`npm install -g truffle`
+
+3. Install [testrpc](https://github.com/ethereumjs/testrpc) 
+`npm install -g ethereumjs-testrpc`
+
 4. Install [punch](http://laktek.github.io/punch/)
 
 [Browser-solidity](https://ethereum.github.io/browser-solidity/) may also be useful for compiling/editing contracts

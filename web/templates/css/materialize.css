@@ -2948,16 +2948,14 @@ ul.staggered-list li {
   }
 }
 
-footer.page-footer {
+.page-footer {
   margin-top: 20px;
   padding-top: 20px;
   background-color: #ee6e73;
 }
 
-footer.page-footer .footer-copyright {
-  overflow: hidden;
-  height: 50px;
-  line-height: 50px;
+.copyright-text {
+  line-height: 2em;
   color: rgba(255, 255, 255, 0.8);
   background-color: rgba(51, 51, 51, 0.08);
 }
@@ -4375,7 +4373,7 @@ small {
   font-size: 75%;
 }
 
-.light, footer.page-footer .footer-copyright {
+.light, .copyright-text {
   font-weight: 300;
 }
 

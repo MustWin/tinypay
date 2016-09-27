@@ -6,6 +6,16 @@
  * Made By MaterializeCSS.com
  */
 
+body {
+  font-family: 'Raleway', sans-serif;
+  color: #2d2d2d;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Karla', sans-serif;
+  color: #3e5673 !important;
+}
+
 .icon-block {
   padding: 0 15px;
 }
@@ -31,4 +41,59 @@
 
 #how-it-works {
   width: 100%;
+}
+
+footer.page-footer {
+  margin-top: 20px;
+  padding-top: 0;
+  background-color: #ee6e73;
+  position: absolute;
+  width: 100%;
+}
+
+footer p {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  margin: 0;
+  padding: 20px;
+  font-size: 13px;
+  text-align: right;
+}
+
+.brand-logo {
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+}
+
+h1.header {
+  margin: 2.1rem 0 1rem 0
+}
+
+.light-blue.lighten-1 {
+  /*background-color: #1ec4d6 !important;*/
+  background-color: #3e5673 !important;
+}
+
+.light-blue-text {
+  color: #3e5673 !important;
+}
+
+.orange {
+  background-color: #3e5673 !important;
+}
+
+.btn-large.orange {
+  background-color: #f66 !important;
+
+}
+
+.orange-text {
+  color: #f66 !important;
+}
+.icon-block .material-icons {
+  font-size: 60px;
+  width: 60px;  
+}
+.light {
+  text-align: center;  
 }

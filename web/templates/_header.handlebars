@@ -14,13 +14,14 @@
 
       <!--Materialize setup-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Karla|Raleway" rel="stylesheet">
       {{#stylesheet_bundle}}/css/all.css{{/stylesheet_bundle}}
     </head>
 
     <body>
 			<header>
         <nav class="light-blue lighten-1" role="navigation">
-          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">{{#upcase}}{{site-title}}{{/upcase}}</a>
+          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">{{site-title}}</a>
             <ul class="right hide-on-med-and-down">
               {{#each navbar}}
       					<li><a href="{{{href}}}">{{label}}</a>
