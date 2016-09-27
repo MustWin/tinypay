@@ -75,7 +75,7 @@
     function checkRecord(records) {
       while (records.length > 0) {
         var record = records.shift() || '';
-        var s = record.split('=', 2);
+        var s = record[0].split('=', 2);
         if (s[0] === 'tinypay-site-verification') {
           return Promise.resolve(s[1]);
         }
@@ -114,7 +114,7 @@
           console.log('giving up verification; domain: "' + eventData.args.domain + '". timed out and: ', err);
           return;
         }
-        console.log('still waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow());
+        console.log('still waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow() + '\nDetails: ', err);
         setTimeout(function () {
           checkDomain(eventData, until);
         }, 37 * 1000);
