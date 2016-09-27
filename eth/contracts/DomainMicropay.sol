@@ -44,7 +44,7 @@ contract DomainMicropay {
             throw;
         }
 
-        var _confirmationHash = block.blockhash(block.number);
+        var _confirmationHash = block.blockhash(block.number-7);
         var newClient = Client({
             domain: domain,
             addr: msg.sender,
