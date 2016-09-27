@@ -3,8 +3,8 @@ rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst 
 all: eth/build web/output web/templates/js/contracts.js oracles/DomainMicropay.sol.js
 
 clean:
-	-rm -rf eth/build
 	-rm -rf web/output
+	-rm -rf oracles/node_modules
 
 eth/build: $(call rwildcard, eth, *.sol *.js)
 	@cd eth; \
