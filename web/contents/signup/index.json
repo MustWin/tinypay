@@ -36,13 +36,13 @@
         },
         {
           "id": "step-agree-contract",
-          "title": "Create your client contract",
+          "title": "Setup your client contract",
           "partial": "agree_contract"
         },
         {
           "id": "step-confirm-domain",
           "title": "Confirm your domain",
-          "partial_content": "confirm_domain"
+          "partial": "confirm_domain"
         },
         {
           "id": "step-install-js",

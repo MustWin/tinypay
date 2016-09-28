@@ -9,7 +9,7 @@ to protect your content.
   MP.Configure({
     // In wei
     pricePerView: "4328994800000000", // in wei this is $0.05 at Ether ~= 11.5 USD
-    // This is the address we showed you when you signed up
+    // This is the address we showed you in step 3
     userClientContractAddress: "0x2C28De2422732AB77EFdA8854597A960FaB7A77B",
     // This is the function triggered when payment is received successfully
     callback: reveal,

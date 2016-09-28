@@ -92,19 +92,23 @@ h1.header {
 }
 .icon-block .material-icons {
   font-size: 60px;
-  width: 60px;  
+  width: 60px;
 }
 .light {
-  text-align: center;  
+  text-align: center;
 }
 .tinypay-btn {
   background-color: #f66 !important;
   padding: 8px 10px 8px 8px;
-  line-height: 20px;  
+  line-height: 20px;
 }
 .tinypay-btn i.left {
   margin-right: 6px;
 }
 h3 {
   margin-top: 26px;
+}
+pre {
+  background-color: #ddd;
+  padding: 10px 0 10px 0;  
 }
