@@ -36,7 +36,9 @@ MP.Add(function() {
       return this;
     },
     renderWeb3: function() {
-      this.$el.html(this.alreadyEnabledTemplate());
+      this.$el.find(".disabled").hide();
+      this.$el.find(".enabled").hide();
+      this.$el.append(this.alreadyEnabledTemplate());
       $('#step-install-metamask .step-indicator').html('<i class="large material-icons">done</i>')
     }
   });

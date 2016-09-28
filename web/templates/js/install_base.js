@@ -9,7 +9,7 @@ MP._doInit = function() {
   MP.state.capabilities = new MP.Capabilities({enabled: false});
   MP.state.signupDomain = new MP.SignupDomain({domain: undefined, capabilities: MP.state.capabilities});
   MP.state.install = new MP.InstallMetamask({
-    el: $("#install-metamask"),
+    el: $(".install-metamask"),
     model: MP.state.capabilities
   });
   MP.state.seed = new MP.SeedWallet({
