@@ -15,6 +15,8 @@ spec:
       env:
         - name: ETHEREUM_SERVICE_HOST
           value: 10.3.252.188
+        - name: ETHEREUM_SECRETS_DIR
+          value: /var/local/secrets
       volumeMounts:
         - name: secrets
           mountPath: /var/local/secrets
