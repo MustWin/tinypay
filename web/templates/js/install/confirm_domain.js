@@ -65,7 +65,7 @@ MP.Add(function() {
       web3.eth.getBlockNumber(function(err, num) {
         console.log(num); console.log(err);
         web3.eth.getBlock(num-1, function(err, block) {
-          self.$el.find(".dns-entry").text("TXT    " + block.hash);
+          self.$el.find(".dns-entry").text("TXT    tinypay-site-verification=" + block.hash);
         })
       })
     },

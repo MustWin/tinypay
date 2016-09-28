@@ -12,6 +12,11 @@
           "partial": "metamask"
         },
         {
+          "id": "step-switch-testnet",
+          "title": "Switch to Testnet",
+          "partial": "switch_testnet"
+        },
+        {
           "id": "step-seed-wallet",
           "title": "Send money to your wallet",
           "partial": "send_money"
@@ -33,6 +38,11 @@
           "id": "step-install-metamask",
           "title": "Install the Metamask extension",
           "partial": "metamask"
+        },
+        {
+          "id": "step-switch-testnet",
+          "title": "Switch to Testnet",
+          "partial": "switch_testnet"
         },
         {
           "id": "step-agree-contract",

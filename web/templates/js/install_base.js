@@ -12,6 +12,10 @@ MP._doInit = function() {
     el: $(".install-metamask"),
     model: MP.state.capabilities
   });
+  MP.state.switch = new MP.SwitchTestnet({
+    el: $(".switch-testnet"),
+    model: MP.state.capabilities
+  });
   MP.state.seed = new MP.SeedWallet({
     el: $("#seed-wallet"),
     model: MP.state.capabilities

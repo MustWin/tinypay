@@ -32,6 +32,7 @@
 			"/js/install/agree_contract.js",
 			"/js/install/confirm_domain.js",
 			"/js/install/install_metamask.js",
+			"/js/install/switch_testnet.js",
 			"/js/install/seed_wallet.js",
 			"/js/install_base.js"
 		],
