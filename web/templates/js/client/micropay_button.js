@@ -26,7 +26,13 @@ MP.Add(function() {
         '</div>' +
         '<span style="margin-left: 10px; line-height: 40px; vertical-align: bottom;"><%= step %></span>' +
       '</div>'),
-    disabledTemplate: _.template('<button class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</button>'),
+    disabledTemplate: _.template(
+        '<div>' +
+          '<a href="http://tinypay.co/" class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</a>' +
+          '</br>' +
+          '<span style="font-size:0.75em">Also be sure to switch to the Morden Testnet</span>' +
+        '</div>'
+        ),
     payForContent: function() {
       var self = this
         , userClientMicropayContract = UserClientMicropay.at(this.model.get('userClientMicropayContractAddress'));
