@@ -29,10 +29,12 @@
 {{#javascript_bundle}}/js/client.js{{/javascript_bundle}}
 
 <script>
-  var reveal = function () { $("#hidden-section").show(); $("#CTA").hide(); };
+  var reveal = function () {
+    $("#hidden-section").show(); $("#CTA").hide();
+  };
   MP.Configure({
     pricePerView: "4328994800000000", // in wei this is $0.05 at Ether ~= 11.5 USD
-    userClientContractAddress: "0x2C28De2422732AB77EFdA8854597A960FaB7A77B",
+    userClientMicropayContractAddress: "0x2C28De2422732AB77EFdA8854597A960FaB7A77B",
     callback: reveal
   }).Init();
 </script>

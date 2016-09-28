@@ -11,29 +11,38 @@ MP.Add(function() {
       this.render();
     },
     enabledTemplate: _.template('<button class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">flash_on</i>TinyPay</button>'),
+    spinnerTemplate: _.template(
+      '<div>' +
+        '<div class="preloader-wrapper small active">' +
+          '<div class="spinner-layer spinner-green-only">' +
+            '<div class="circle-clipper left">' +
+              '<div class="circle"></div>' +
+            '</div><div class="gap-patch">' +
+              '<div class="circle"></div>' +
+            '</div><div class="circle-clipper right">' +
+              '<div class="circle"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<span style="margin-left: 10px; line-height: 40px; vertical-align: bottom;"><%= step %></span>' +
+      '</div>'),
     disabledTemplate: _.template('<button class="tinypay-btn waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Learn about TinyPay</button>'),
     payForContent: function() {
       var self = this
         , userClientMicropayContract = UserClientMicropay.at(this.model.get('userClientMicropayContractAddress'));
-      var registerHit = function(contract) {
-        contract.registerHit()
-          .then(function() { return self.model.get('callback')(); })
-          .catch(function(err) { console.log("PAYMENT FAILED: " + err); });
-      };
-      var getUserContractAndHit = function(errFn) {
-        userClientMicropayContract.getContract.call()
-          .then(function(contractAddr) {
-            return registerHit(UserClient.at(contractAddr));
-          })
-          .catch(errFn);
-      };
-      getUserContractAndHit(function(err) {
-        // If no contract, register first then retry
-        userClientMicropayContract.registerUser()
+      this.updateStep("Verifying Transaction");
+      userClientMicropayContract.registerHit({from: web3.eth.coinbase})
           .then(function() {
-            getUserContractAndHit(function(err) { console.log("Unable to register"); });
+            self.updateStep("Transaction Confirmed");
+            return self.model.get('callback')();
+          })
+          .catch(function(err) {
+            console.log("PAYMENT FAILED: " + err);
+            self.render();
           });
-      })
+    },
+    updateStep: function(step) {
+      this.$el.html(this.spinnerTemplate({step: "Sending Transaction"}));
     },
     render: function() {
       if (this.model.get('capabilities').get('enabled')) {
@@ -63,10 +72,7 @@ MP.Add(function() {
         return "pricePerView must be a whole number";
       }
       if (!attrs.userClientMicropayContractAddress) {
-        return "userClientContractAddress is a required configuration";
-      }
-      if (attrs.userClientContractMicropayAddress) {
-        return "userClientContractAddress is a required configuration";
+        return "userClientMicropayContractAddress is a required configuration";
       }
 
     }
