@@ -50,7 +50,7 @@ MP.Add(function() {
           console.log(err);
           return;
         }
-        if (client.domain == this.model.get('domain')) {
+        if (conf.domain == this.model.get('domain')) {
           self.renderSuccess(conf);
           self.clientConfirmations.stopWatching();
         }
