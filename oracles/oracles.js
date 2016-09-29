@@ -4,23 +4,22 @@
 
     var Web3 = require('web3');
     var web3 = new Web3();
-
-    var Promise = require('promise');
-    const dns = require('dns');
-    var resolveTxt = Promise.denodeify(dns.resolveTxt);
-
     var moment = require('moment');
-    var path = require('path');
+    var Promise = require('promise');
+    var resolveTxt = Promise.denodeify(require('dns').resolveTxt);
 
-    var DomainMicropay = require(path.join(__dirname, 'DomainMicropay.sol.js'));
-
+    var DomainMicropay = require(require('path').join(__dirname, 'DomainMicropay.sol.js'));
     var contract = DomainMicropay.deployed();
 
     var password = '';
-    var eventOpts = {
-      address: DomainMicropay.address,
-      fromBlock: '0x0',
-      toBlock: 'latest'
+    var txtPrefix = 'tinypay-site-verification';
+    var store = {};
+    var eventOpts = function () {
+      return {
+        address: DomainMicropay.address,
+        fromBlock: '0x0',
+        toBlock: 'latest'
+      };
     };
     var txnOpts = function () {
       return {
@@ -30,6 +29,9 @@
 
     function errFn(msgPrefix) {
       return function (err) {
+        if (err.Error) {
+          err = err.Error;
+        }
         console.error(msgPrefix + ': ', err);
       }
     }
@@ -40,55 +42,45 @@
       }
     }
 
-    function domainIsNotSetUp(retryUntil, eventData) {
-      return function (err) {
-        if (retryUntil.isBefore(moment())) {
-          console.error('giving up on verification of client domain "' + eventData.args.domain + '"', err);
-          return;
-        }
-
-        console.log('client domain "' + eventData.args.domain + '" not yet set up.  trying again ' + retryUntil.fromNow());
-
-        setTimeout(function () {
-          checkDomain(eventData, retryUntil);
-        }, 37 * 1000);
-      }
-    }
-
-    function domainIsSetUp(eventData) {
-      return function (addresses) {}
-    }
-
-    function notifyBlockChain(eventData) {
-      if (web3.personal.unlockAccount(web3.eth.coinbase, password)) {
-        contract.confirmClient(
-          eventData.args.domain,
-          eventData.args.client,
-          eventData.args._pricePerHit, txnOpts()
-        ).then(
-          logFn('\nsent confirmClient transaction for "' + eventData.args.domain + '"'),
-          errFn('\nerror sending confirmClient transaction for "' + eventData.args.domain + '"')
-        );
-      }
-    }
-
     function checkRecord(records) {
       while (records.length > 0) {
         var record = records.shift() || '';
         var s = record[0].split('=', 2);
-        if (s[0] === 'tinypay-site-verification') {
+        if (s[0] === txtPrefix) {
           return Promise.resolve(s[1]);
         }
       }
       return Promise.reject('TXT record not found');
     }
 
-    function verifyHash(expect) {
+    function getBlockHashesUntil(lastHash, count) {
+      var max = (count || 200) - 1;
+      var key = lastHash + max;
+      if (key in store) {
+        console.log('use cached hashes');
+        return store[key];
+      }
+      var hash = lastHash;
+      var hashes = [hash];
+      var b, ix;
+      for (ix = 0; ix < 200; ix++) {
+        b = web3.eth.getBlock(hash, false);
+        hash = b.parentHash;
+        hashes.push(hash);
+      }
+      store[key] = hashes;
+      return hashes;
+    }
+
+    function verifyHash(eventData) {
+      var hashes = getBlockHashesUntil(eventData.blockHash);
       return function (got) {
-        if (expect === got) {
-          return Promise.resolve(got);
+        for (var ix in hashes) {
+          if (hashes[ix] === got) {
+            return Promise.resolve(got);
+          }
         }
-        return Promise.reject('incorrect TXT value');
+        return Promise.reject('incorrect TXT value ' + txtPrefix + '=' + got);
       };
     }
 
@@ -114,7 +106,12 @@
           console.log('giving up verification; domain: "' + eventData.args.domain + '". timed out and: ', err);
           return;
         }
+
+        if (err.Error) {
+          err = err.Error;
+        }
         console.log('still waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow() + '\nDetails: ', err);
+
         setTimeout(function () {
           checkDomain(eventData, until);
         }, 37 * 1000);
@@ -124,7 +121,7 @@
     function checkDomain(eventData, until) {
       resolveTxt(eventData.args.domain)
         .then(checkRecord)
-        .then(verifyHash(eventData.args.confirmationHash))
+        .then(verifyHash(eventData))
         .then(notifySuccess(eventData))
         .catch(retryLaterMaybe(eventData, until));
     }
@@ -146,7 +143,6 @@
         return;
       }
       console.log('ClientCreated: ', eventData.args.domain, eventData.transactionHash);
-      console.log('verification hash: ', eventData.args.confirmationHash);
       contract.getPaymentContractForDomain
         .call(eventData.args.domain)
         .then(beginDomainVerification(eventData))
@@ -168,8 +164,8 @@
         web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
         DomainMicropay.setProvider(web3.currentProvider);
 
-        contract.ClientCreated({}, eventOpts, onClientCreated);
-        contract.ClientConfirmed({}, eventOpts, onClientConfirmed);
+        contract.ClientCreated({}, eventOpts(), onClientCreated);
+        contract.ClientConfirmed({}, eventOpts(), onClientConfirmed);
       }
     };
 
