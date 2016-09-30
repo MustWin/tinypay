@@ -19,7 +19,7 @@ MP.Add(function () {
       try {
         this.updateStep("Creating Contract");
         this._handleFormEvt(evt, function () {
-          var opts = {from: web3.eth.coinbase, gas: 10000000};
+          var opts = {from: web3.eth.coinbase, gas: 100000};
           self.micropayContract.signUp(self.model.get("domain"), self.model.get("amount"), opts)
             .then(function () { /* This triggers an event on success that we're listening for */})
             .catch(function (err) { self._showError(evt, "signup-form", err); });
@@ -61,12 +61,17 @@ MP.Add(function () {
     show: function () {
       var self = this;
       this.$el.show();
-      web3.eth.getBlockNumber(function(err, num) {
-        console.log(num); console.log(err);
-        web3.eth.getBlock(num-1, function(err, block) {
-          self.$el.find(".dns-entry").text("TXT    tinypay-site-verification=" + block.hash);
-        })
-      })
+      var getBlockNumber = Promise.promisify(web3.eth.getBlockNumber, {context: web3.eth});
+      var getBlock = Promise.promisify(web3.eth.getBlock, {context: web3.eth});
+      return getBlockNumber()
+        .then(function (num) {
+          return getBlock(num - 1)
+            .then(function (block) {
+              self.$el
+                .find(".dns-entry")
+                .text("TXT    tinypay-site-verification=" + block.hash);
+            });
+        }).catch(function (err) {console.log(err);});
     },
     successTemplate: "<p>Your contract has been created and is available at this address. " +
     "Save it somewhere safe, you'll need it to withdraw your funds.</p>" +
@@ -77,5 +82,4 @@ MP.Add(function () {
       $("#step-confirm-domain").find(".step-indicator").html("<i class=\"large material-icons\">done</i>");
     }
   });
-
 });

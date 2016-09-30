@@ -45,3 +45,13 @@ console.log('STARTING: ', rpcUrl);
 // Main Entry Point... start watchers
 //
 lib.Oracles.startWatcher(rpcUrl, wallet_password);
+
+
+// status ticker
+var msg = 'starting';
+function tick() {
+  console.log('\t' + msg);
+  msg = '... still here';
+  setTimeout(tick, 27 * 1000);
+}
+tick();

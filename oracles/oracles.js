@@ -122,16 +122,15 @@
         contract.ClientConfirmed({}, eventOpts(), function (err, data) {
           if (err) {
             console.log('Error ClientConfirmed: ', err);
-            Promise.reject(err);
+            return;
           }
           console.log('Event ClientConfirmed: ', data.args.domain);
-          Promise.resolve(data);
         });
 
         contract.ClientCreated({}, eventOpts(), function (err, data) {
           if (err) {
             console.log('Error ClientCreated: ', err);
-            Promise.reject(err);
+            return;
           }
           console.log('Event ClientCreated: ', data.args.domain);
           contract.getPaymentContractForDomain
