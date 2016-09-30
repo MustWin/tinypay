@@ -16,6 +16,7 @@ spec:
         - "--cache=768"
         - "--rpc"
         - "--rpcaddr=0.0.0.0"
+        - "--rpcapi='admin,debug,eth,miner,net,personal,shh,txpool,web3'"
       env:
       ports:
         - containerPort: 8545
