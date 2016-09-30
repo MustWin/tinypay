@@ -1,0 +1,26 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true,
+    "browser": true,
+    "jquery": true
+  },
+  "rules": {
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "no-console": "off"
+  },
+  "globals": {
+    "Backbone": true,
+    "DomainMicropay": true,
+    "MP": true,
+    "web3": true,
+    "_": true
+  }
+}

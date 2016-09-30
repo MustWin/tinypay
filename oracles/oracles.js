@@ -1,7 +1,6 @@
 (function (global) {
   'use strict';
-  var Oracles = (function () {
-
+  global.Oracles = (function () {
     var Web3 = require('web3');
     var web3 = new Web3();
     var moment = require('moment');
@@ -14,31 +13,21 @@
     var password = '';
     var txtPrefix = 'tinypay-site-verification';
     var store = {};
-    var eventOpts = function () {
-      return {
-        address: DomainMicropay.address,
-        fromBlock: '0x0',
-        toBlock: 'latest'
-      };
-    };
-    var txnOpts = function () {
-      return {
-        from: web3.eth.coinbase
-      };
-    };
-
-    function errFn(msgPrefix) {
-      return function (err) {
-        if (err.Error) {
-          err = err.Error;
-        }
-        console.error(msgPrefix + ': ', err);
-      }
-    }
+    var eventOpts = function () { return {address: DomainMicropay.address, fromBlock: '0x0', toBlock: 'latest'}; };
+    var txnOpts = function () { return {from: web3.eth.coinbase}; };
 
     function logFn(msgPrefix) {
       return function (data) {
         console.log(msgPrefix + ': ', data);
+        Promise.resolve(data);
+      }
+    }
+
+    function errFn(msgPrefix) {
+      return function (err) {
+        if (err.Error) { err = err.Error; }
+        console.error(msgPrefix + ': ', err);
+        Promise.reject(err);
       }
     }
 
@@ -46,9 +35,7 @@
       while (records.length > 0) {
         var record = records.shift() || '';
         var s = record[0].split('=', 2);
-        if (s[0] === txtPrefix) {
-          return Promise.resolve(s[1]);
-        }
+        if (s[0] === txtPrefix) { return Promise.resolve(s[1]); }
       }
       return Promise.reject('TXT record not found');
     }
@@ -56,45 +43,36 @@
     function getBlockHashesUntil(lastHash, count) {
       var max = (count || 200) - 1;
       var key = lastHash + max;
-      if (key in store) {
-        console.log('use cached hashes');
-        return store[key];
+      if (!(key in store)) {
+        var hash = lastHash;
+        var hashes = [hash];
+        for (var ix = 0; ix < max; ix++) {
+          hash = web3.eth.getBlock(hash, false).parentHash;
+          hashes.push(hash);
+        }
+        store[key] = hashes;
       }
-      var hash = lastHash;
-      var hashes = [hash];
-      var b, ix;
-      for (ix = 0; ix < 200; ix++) {
-        b = web3.eth.getBlock(hash, false);
-        hash = b.parentHash;
-        hashes.push(hash);
-      }
-      store[key] = hashes;
-      return hashes;
+      return store[key];
     }
 
     function verifyHash(eventData) {
       var hashes = getBlockHashesUntil(eventData.blockHash);
       return function (got) {
-        for (var ix in hashes) {
-          if (hashes[ix] === got) {
-            return Promise.resolve(got);
-          }
-        }
+        for (var ix in hashes) { if (hashes[ix] === got) { return Promise.resolve(got); } }
         return Promise.reject('incorrect TXT value ' + txtPrefix + '=' + got);
       };
     }
 
     function notifySuccess(eventData) {
-      return function (hash) {
+      var args = eventData.args;
+      return function () {
         if (web3.personal.unlockAccount(web3.eth.coinbase, password)) {
-          return Promise.resolve(contract.confirmClient(
-            eventData.args.domain,
-            eventData.args.client,
-            eventData.args._pricePerHit, txnOpts()
-          ).then(
-            logFn('\nsent confirmClient transaction for "' + eventData.args.domain + '"'),
-            errFn('\nerror sending confirmClient transaction for "' + eventData.args.domain + '"')
-          ));
+          return Promise.resolve(
+            contract.confirmClient(args.domain, args.client, args._pricePerHit, txnOpts())
+              .then(
+                logFn('\nsent confirmClient transaction for "' + args.domain + '"'),
+                errFn('\nerror sending confirmClient transaction for "' + args.domain + '"')
+              ));
         }
         return Promise.reject('unable to unlock account');
       };
@@ -103,18 +81,18 @@
     function retryLaterMaybe(eventData, until) {
       return function (err) {
         if (until.isBefore(moment())) {
-          console.log('giving up verification; domain: "' + eventData.args.domain + '". timed out and: ', err);
+          console.log('\tgiving up verification; domain: "' + eventData.args.domain + '". timed out and: ', err);
           return;
         }
-
         if (err.Error) {
           err = err.Error;
         }
-        console.log('still waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow() + '\nDetails: ', err);
 
-        setTimeout(function () {
-          checkDomain(eventData, until);
-        }, 37 * 1000);
+        console.log(
+          '\tstill waiting for domain "' + eventData.args.domain + '" to be set up... will give up ' + until.fromNow() +
+          '\n\tDetails: ', err);
+
+        setTimeout(function () { checkDomain(eventData, until); }, 37 * 1000);
       };
     }
 
@@ -129,32 +107,9 @@
     function beginDomainVerification(eventData) {
       return function (blockAddress) {
         if (blockAddress.length < 10) {
-          // blockAddress '0x' or something shorter than a full address
-          // indicates that the domain has not yet been verified.
           checkDomain(eventData, moment().add(60, 'minutes'));
         }
-        // else already confirmed
       }
-    }
-
-    function onClientCreated(err, eventData) {
-      if (err) {
-        console.error('onClientCreated: ', err);
-        return;
-      }
-      console.log('ClientCreated: ', eventData.args.domain, eventData.transactionHash);
-      contract.getPaymentContractForDomain
-        .call(eventData.args.domain)
-        .then(beginDomainVerification(eventData))
-        .catch(errFn('Unhandled Error: '));
-    }
-
-    function onClientConfirmed(err, eventData) {
-      if (err) {
-        console.error('onClientConfirmed: ', err);
-        return;
-      }
-      console.log('ClientConfirmed: ', eventData.args.domain, eventData.transactionHash);
     }
 
     return {
@@ -164,11 +119,27 @@
         web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
         DomainMicropay.setProvider(web3.currentProvider);
 
-        contract.ClientCreated({}, eventOpts(), onClientCreated);
-        contract.ClientConfirmed({}, eventOpts(), onClientConfirmed);
+        contract.ClientConfirmed({}, eventOpts(), function (err, data) {
+          if (err) {
+            console.log('Error ClientConfirmed: ', err);
+            Promise.reject(err);
+          }
+          console.log('Event ClientConfirmed: ', data.args.domain);
+          Promise.resolve(data);
+        });
+
+        contract.ClientCreated({}, eventOpts(), function (err, data) {
+          if (err) {
+            console.log('Error ClientCreated: ', err);
+            Promise.reject(err);
+          }
+          console.log('Event ClientCreated: ', data.args.domain);
+          contract.getPaymentContractForDomain
+            .call(data.args.domain)
+            .then(beginDomainVerification(data))
+            .catch(errFn('Unhandled Error: '));
+        });
       }
     };
-
   })();
-  global.Oracles = Oracles;
 })(this);

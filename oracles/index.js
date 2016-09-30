@@ -45,12 +45,3 @@ console.log('STARTING: ', rpcUrl);
 // Main Entry Point... start watchers
 //
 lib.Oracles.startWatcher(rpcUrl, wallet_password);
-
-//
-// Prevent early exit while event watchers loop.
-//
-function tick() {
-  process.stdout.write(".");
-  setTimeout(tick, 11 * 1000);
-}
-tick();

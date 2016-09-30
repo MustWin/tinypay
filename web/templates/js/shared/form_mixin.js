@@ -18,7 +18,6 @@ MP.Add(function() {
       this._showStep && this._showStep(1); // Used on withdraw_form
     },
     _handleFormEvt: function(evt, cb) {
-      console.log(evt)
       evt.preventDefault();
       var form = _.reduce(
         $(evt.target).serializeArray(),
