@@ -7,7 +7,7 @@
  */
 
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #2d2d2d;
 }
 
@@ -43,6 +43,10 @@ h1, h2, h3, h4, h5, h6 {
 
 #how-it-works {
   width: 100%;
+}
+
+.vertical-center {
+  margin-top: 10%;
 }
 
 footer.page-footer {
@@ -115,4 +119,7 @@ h3 {
 pre {
   background-color: #ddd;
   padding: 10px 0 10px 0;
+}
+i.large {
+  font-size: 2.92rem;
 }
