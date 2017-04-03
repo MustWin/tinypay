@@ -6,6 +6,10 @@
  * Made By MaterializeCSS.com
  */
 
+ html, body {
+   height: 100%;
+ }
+
 body {
   font-family: 'Roboto', sans-serif;
   color: #2d2d2d;
@@ -13,7 +17,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Karla', sans-serif;
-  color: #3e5673 !important;
+  color: #3e5673;
 }
 
 .icon-block {
@@ -24,9 +28,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #min-height {
-  min-height: 500px;
-  padding-bottom: 100px;
+  min-height: 100%;
+  margin-bottom: -144px;
   overflow: scroll;
+}
+
+#min-height:after {
+  content: "";
+  display: block;
+}
+
+footer, #min-height:after {
+  height: 60px;
 }
 
 .progress {
@@ -46,15 +59,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .vertical-center {
-  margin-top: 10%;
+  margin-top: 15%;
 }
 
 footer.page-footer {
-  margin-top: 20px;
   padding-top: 0;
-  background-color: #ee6e73;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   z-index: 100;
 }
@@ -63,7 +72,7 @@ footer p {
   color: rgba(255, 255, 255, 0.8);
   font-weight: 300;
   margin: 0;
-  padding: 24px;
+  padding: 20px 24px;
   font-size: 13px;
   text-align: right;
 }
@@ -77,27 +86,25 @@ h1.header {
   margin: 2.1rem 0 1rem 0
 }
 
-.light-blue.lighten-1 {
-  /*background-color: #1ec4d6 !important;*/
-  background-color: #3e5673 !important;
+.index-title {
+  min-height: 50px;
+}
+.navy-text {
+  color: #3e5673;
 }
 
-.light-blue-text {
-  color: #3e5673 !important;
-}
-
-.orange {
-  background-color: #3e5673 !important;
+.magenta {
+  background-color: #f66;
 }
 
 .btn-large.orange, .btn {
-  background-color: #f66 !important;
-
+  background-color: #f66;
 }
 
-.orange-text {
-  color: #f66 !important;
+.navy {
+  background-color: #3e5673;
 }
+
 .icon-block .material-icons {
   font-size: 60px;
   width: 60px;
@@ -106,7 +113,7 @@ h1.header {
   text-align: center;
 }
 .tinypay-btn {
-  background-color: #f66 !important;
+  background-color: #f66;
   padding: 8px 10px 8px 8px;
   line-height: 20px;
 }
