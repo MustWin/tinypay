@@ -25,6 +25,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #min-height {
   min-height: 500px;
+  padding-bottom: 100px;
+  overflow: scroll;
 }
 
 .progress {
@@ -48,6 +50,7 @@ footer.page-footer {
   padding-top: 0;
   background-color: #ee6e73;
   position: absolute;
+  bottom: 0;
   width: 100%;
 }
 
@@ -110,5 +113,5 @@ h3 {
 }
 pre {
   background-color: #ddd;
-  padding: 10px 0 10px 0;  
+  padding: 10px 0 10px 0;
 }
