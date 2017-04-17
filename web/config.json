@@ -11,9 +11,13 @@
 
 	"bundles": {
 		"/css/all.css": [
+      "/css/bootstrap.min.css",
 			"/css/materialize.css",
 			"/css/style.css"
 		],
+    "/js/bootstrap.min.js": [
+      "/js/lib/bootstrap.min.js"
+    ],
 		"/js/client.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
