@@ -1,6 +1,6 @@
 {
 	"site-title": "TinyPay",
-	"footer-text": "Copyright 2016 MustWin LLC, all rights reserved",
+	"footer-text": "Copyright 2017 Lovable Tech LLC, all rights reserved",
 	"navbar": [
 		{ "label": "Home", "href": "/" },
     { "label": "How it works", "href": "/howitworks" },

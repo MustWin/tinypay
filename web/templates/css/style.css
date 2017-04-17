@@ -28,8 +28,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #min-height {
-  min-height: 100%;
-  margin-bottom: -60px;
+  min-height: 50%;
   overflow: scroll;
 }
 
@@ -60,6 +59,18 @@ footer, #min-height:after {
 
 .vertical-center {
   margin-top: 15%;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
 }
 
 footer.page-footer {
@@ -129,4 +140,7 @@ pre {
 }
 i.large {
   font-size: 2.92rem;
+}
+#index-banner {
+  margin-top: 70px;
 }
