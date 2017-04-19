@@ -84,10 +84,21 @@ nav ul li a, nav ul li a:hover {
   color: black;
 }
 
+nav ul li a:hover {
+  border-bottom: 2px solid black;
+}
+
 footer {
   position: fixed;
   bottom: 0;
   z-index: 100;
+  background: white;
+  box-shadow: 0px -5px 5px 1px rgba(204,204,204,0.5);
+  width: 100%;
+}
+
+.marg-15 {
+  margin-top: 70px;
 }
 
 footer.page-footer {
@@ -97,7 +108,7 @@ footer.page-footer {
 }
 
 footer p {
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   font-weight: 300;
   margin: 0;
   padding: 20px 24px;
@@ -160,8 +171,7 @@ i.large {
 }
 
 .hero-bg {
-  height: 850px;
-  background: black;
+  height: 900px;
   background: url(/img/bg.jpg) no-repeat bottom center;
   -webkit-background-size: cover;
   -moz-background-size: cover;

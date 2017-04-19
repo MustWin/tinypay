@@ -18,14 +18,12 @@
     <!--   Icon Section   -->
     {{#each features}}
       <div class="row">
-        <div class="col s4 offset-s2">
+        <div class="col s6 offset-s3">
           <div class="icon-block">
             <h2 class="center navy-text"><i class="material-icons">{{icon}}</i></h2>
+            <h5 class="center index-title">{{title}}</h5>
+            <p class="light">{{text}}</p>
           </div>
-        </div>
-        <div class="col s4">
-          <h5 class="center index-title">{{title}}</h5>
-          <p class="light">{{text}}</p>
         </div>
       </div>
     {{/each}}
