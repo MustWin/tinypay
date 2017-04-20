@@ -4,4 +4,11 @@
     height: 500px;
   }
 
+  .hero-bg .container {
+    margin: 15% auto 0;
+  }
+
+  .nav-mobile-btn {
+    color: #000;
+  }
 }

@@ -48,7 +48,10 @@
 			"/js/client/capabilities.js",
 			"/js/withdraw/withdraw_form.js",
 			"/js/withdraw_base.js"
-		]
+		],
+    "/js/main.js": [
+      "/js/main.js"
+    ]
 
 	}
 }
