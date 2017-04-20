@@ -1,3 +1,3 @@
 $(document).ready(function() {
-  $(".button-collapse").sideNav();
+  $(".nav-mobile-btn").sideNav();
 });

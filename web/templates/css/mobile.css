@@ -11,4 +11,16 @@
   .nav-mobile-btn {
     color: #000;
   }
+
+  #how-it-works {
+    margin-top: 15%;
+  }
+
+  #sidenav-overlay {
+    z-index: 99;
+  }
+
+  footer p {
+    text-align: center;
+  }
 }

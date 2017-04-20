@@ -46,6 +46,10 @@ footer, #min-height:after {
   height: 60px;
 }
 
+blockquote {
+  border-left-color: #3e5673;
+}
+
 .progress {
   display: none;
 }
