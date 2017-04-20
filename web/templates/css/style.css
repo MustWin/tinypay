@@ -18,6 +18,11 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Karla', sans-serif;
   color: #3e5673;
+  letter-spacing: -2px;
+}
+
+p {
+  font-size: 16px;
 }
 
 .icon-block {
@@ -136,6 +141,10 @@ h1.header {
   background-color: #f66;
 }
 
+.magenta-font {
+  color: #f66;
+}
+
 .btn-large.orange, .btn {
   background-color: #f66;
 }
@@ -152,7 +161,7 @@ h1.header {
   text-align: center;
 }
 .tinypay-btn {
-  background-color: #f66;
+  background-color: #3e5673;
   padding: 8px 10px 8px 8px;
   line-height: 20px;
 }
@@ -163,8 +172,8 @@ h3 {
   margin-top: 26px;
 }
 pre {
-  background-color: #ddd;
-  padding: 10px 0 10px 0;
+  background-color: #fefefe;
+  padding: 15px;
 }
 i.large {
   font-size: 2.92rem;
