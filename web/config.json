@@ -11,9 +11,14 @@
 
 	"bundles": {
 		"/css/all.css": [
+      "/css/bootstrap.min.css",
 			"/css/materialize.css",
-			"/css/style.css"
+			"/css/style.css",
+      "/css/mobile.css"
 		],
+    "/js/bootstrap.min.js": [
+      "/js/lib/bootstrap.min.js"
+    ],
 		"/js/client.js": [
 			"/js/contracts.js",
 			"/js/load_deps.js",
@@ -43,7 +48,10 @@
 			"/js/client/capabilities.js",
 			"/js/withdraw/withdraw_form.js",
 			"/js/withdraw_base.js"
-		]
+		],
+    "/js/main.js": [
+      "/js/main.js"
+    ]
 
 	}
 }

@@ -1,9 +1,9 @@
 {{> header }}
 
-	<div class="section no-pad-bot" id="index-banner">
+	<div class="section no-pad-bot vertical-center" id="index-banner">
 		<div class="container">
       <div class="row">
-        <div class="col s8 push-s2">
+        <div class="col l12">
           <h3>{{title}}</h3>
           <div id="withdraw-form">
             <div class="has-wallet">
@@ -14,9 +14,9 @@
                     <p class="errorMsg"></p>
                   </div>
                   <input type="text" name="address" placeholder="0x1k2j3jsd8sfa0df0939j3j3jrdjis9"/>
-                  <div class="col s6">
-                    <button type="submit" class="col s4 btn waves-effect waves-light">Submit</button>
-                    <div class="progress col s5 push-s1">
+                  <div class="col l6">
+                    <button type="submit" class="col l4 btn waves-effect waves-light navy">Submit</button>
+                    <div class="progress col l5 push-s1">
                       <div class="indeterminate"></div>
                     </div>
                   </div>
@@ -28,13 +28,12 @@
                   <div class="error">
                     <a href="/withdraw">Go back</a>
                     <p class="errorMsg"></p>
-
                   </div>
                   <label for="withdraw-amount">Amount to withdraw (in wei)</label>
                   <input type="text" name="withdraw_amount"/>
-                  <div class="col s6">
-                    <button type="submit" class="col s4 btn waves-effect waves-light">Submit</button>
-                    <div class="progress col s5 push-s1">
+                  <div class="col l6">
+                    <button type="submit" class="col l4 btn waves-effect waves-light">Submit</button>
+                    <div class="progress col l5 push-s1">
                       <div class="indeterminate"></div>
                     </div>
                   </div>

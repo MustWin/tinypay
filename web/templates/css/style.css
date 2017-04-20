@@ -6,14 +6,23 @@
  * Made By MaterializeCSS.com
  */
 
+ html, body {
+   height: 100%;
+ }
+
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: #2d2d2d;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Karla', sans-serif;
-  color: #3e5673 !important;
+  color: #3e5673;
+  letter-spacing: -2px;
+}
+
+p {
+  font-size: 16px;
 }
 
 .icon-block {
@@ -24,7 +33,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #min-height {
-  min-height: 500px;
+  min-height: 50%;
+  overflow: scroll;
+}
+
+#min-height:after {
+  content: "";
+  display: block;
+}
+
+footer, #min-height:after {
+  height: 60px;
+}
+
+blockquote {
+  border-left-color: #3e5673;
 }
 
 .progress {
@@ -43,19 +66,61 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-footer.page-footer {
-  margin-top: 20px;
-  padding-top: 0;
-  background-color: #ee6e73;
-  position: absolute;
+.vertical-center {
+  margin-top: 15%;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-theme {
+  background-color: white;
+  color: black;
+}
+
+.nav-theme .brand-logo {
+  color: black;
+}
+
+nav ul li a, nav ul li a:hover {
+  color: black;
+}
+
+nav ul li a:hover {
+  border-bottom: 2px solid black;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  background: white;
+  box-shadow: 0px -5px 5px 1px rgba(204,204,204,0.5);
   width: 100%;
 }
 
+.marg-15 {
+  margin-top: 70px;
+}
+
+footer.page-footer {
+  padding-top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
 footer p {
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   font-weight: 300;
   margin: 0;
-  padding: 24px;
+  padding: 20px 24px;
   font-size: 13px;
   text-align: right;
 }
@@ -69,27 +134,29 @@ h1.header {
   margin: 2.1rem 0 1rem 0
 }
 
-.light-blue.lighten-1 {
-  /*background-color: #1ec4d6 !important;*/
-  background-color: #3e5673 !important;
+.index-title {
+  min-height: 50px;
+}
+.navy-text {
+  color: #3e5673;
 }
 
-.light-blue-text {
-  color: #3e5673 !important;
+.magenta {
+  background-color: #f66;
 }
 
-.orange {
-  background-color: #3e5673 !important;
+.magenta-font {
+  color: #f66;
 }
 
 .btn-large.orange, .btn {
-  background-color: #f66 !important;
-
+  background-color: #f66;
 }
 
-.orange-text {
-  color: #f66 !important;
+.navy {
+  background-color: #3e5673;
 }
+
 .icon-block .material-icons {
   font-size: 60px;
   width: 60px;
@@ -98,7 +165,7 @@ h1.header {
   text-align: center;
 }
 .tinypay-btn {
-  background-color: #f66 !important;
+  background-color: #3e5673;
   padding: 8px 10px 8px 8px;
   line-height: 20px;
 }
@@ -109,6 +176,30 @@ h3 {
   margin-top: 26px;
 }
 pre {
-  background-color: #ddd;
-  padding: 10px 0 10px 0;  
+  background-color: #fefefe;
+  padding: 15px;
+}
+i.large {
+  font-size: 2.92rem;
+}
+
+.hero-bg {
+  height: 900px;
+  background: url(/img/bg.jpg) no-repeat bottom center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.btn-large:hover a:hover {
+  color: white;
+}
+
+.hero-bg .container {
+  margin-top: 15%;
+}
+
+.hero-bg h1, .hero-bg h5 {
+  color: black;
 }

@@ -9,6 +9,8 @@
 			<title>{{{site-title}}}</title>
 			<meta name="description" content="">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
 
 			<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -20,20 +22,20 @@
 
     <body>
 			<header>
-        <nav class="light-blue lighten-1" role="navigation">
-          <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">{{site-title}}</a>
+        <nav class="nav-theme" role="navigation">
+          <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><i class="material-icons">attach_money</i>{{site-title}}</a>
             <ul class="right hide-on-med-and-down">
               {{#each navbar}}
       					<li><a href="{{{href}}}">{{label}}</a>
       				{{/each}}
             </ul>
 
+            <a href="#" data-activates="nav-mobile" class="button-collapse nav-mobile-btn"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="side-nav">
               {{#each navbar}}
       					<li><a href="{{{href}}}">{{label}}</a>
       				{{/each}}
             </ul>
-            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
           </div>
         </nav>
 			</header>

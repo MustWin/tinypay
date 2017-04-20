@@ -1,0 +1,26 @@
+/* iPhone 6+ and below */
+@media screen and (max-width: 500px) {
+  .hero-bg {
+    height: 500px;
+  }
+
+  .hero-bg .container {
+    margin: 15% auto 0;
+  }
+
+  .nav-mobile-btn {
+    color: #000;
+  }
+
+  #how-it-works {
+    margin-top: 15%;
+  }
+
+  #sidenav-overlay {
+    z-index: 99;
+  }
+
+  footer p {
+    text-align: center;
+  }
+}
