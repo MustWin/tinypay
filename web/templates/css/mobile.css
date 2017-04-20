@@ -1,0 +1,7 @@
+/* iPhone 6+ and below */
+@media screen and (max-width: 500px) {
+  .hero-bg {
+    height: 500px;
+  }
+
+}

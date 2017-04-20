@@ -13,7 +13,8 @@
 		"/css/all.css": [
       "/css/bootstrap.min.css",
 			"/css/materialize.css",
-			"/css/style.css"
+			"/css/style.css",
+      "/css/mobile.css"
 		],
     "/js/bootstrap.min.js": [
       "/js/lib/bootstrap.min.js"
